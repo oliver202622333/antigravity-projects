@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>板智管家系统 - 量化主界面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            background: #2d2d2d;
+            color: #d4d4d4;
+            font-size: 13px;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶部菜单栏 */
+        .menu-bar {
+            height: 28px;
+            background: #3c3c3c;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .menu-item {
+            padding: 4px 12px;
+            cursor: pointer;
+            color: #cccccc;
+            font-size: 12px;
+        }
+
+        .menu-item:hover {
+            background: #505050;
+        }
+
+        /* 主容器 */
+        .main-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* 左侧边栏 */
+        .left-sidebar {
+            width: 320px;
+            background: #252526;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #1e1e1e;
+        }
+
+        .sidebar-header {
+            height: 35px;
+            background: #333333;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            border-bottom: 1px solid #1e1e1e;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow: auto;
+            padding: 8px 0;
+        }
+
+        /* 树形控件 */
+        .tree-item {
+            display: flex;
+            align-items: center;
+            padding: 4px 12px;
+            cursor: pointer;
+            color: #cccccc;
+            transition: background 0.2s;
+        }
+
+        .tree-item:hover {
+            background: #2a2d2e;
+        }
+
+        .tree-item.selected {
+            background: #094771;
+        }
+
+        .tree-item .arrow {
+            width: 16px;
+            color: #858585;
+            font-size: 10px;
+        }
+
+        .tree-item .icon {
+            margin-right: 6px;
+            font-size: 14px;
+        }
+
+        .tree-item.folder .icon {
+            color: #dcb67a;
+        }
+
+        .tree-item.file .icon {
+            color: #e8e8e8;
+        }
+
+        .tree-item .text {
+            flex: 1;
+            font-size: 12px;
+        }
+
+        .tree-item .badge {
+            color: #858585;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+
+        .tree-children {
+            margin-left: 16px;
+        }
+
+        /* 主工作区 */
+        .main-workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #1e1e1e;
+            overflow: hidden;
+        }
+
+        /* 多标签页导航 */
+        .tabs-bar {
+            height: 35px;
+            background: #2d2d2d;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 8px;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: #2d2d2d;
+            border: 1px solid #1e1e1e;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            color: #cccccc;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 2px;
+        }
+
+        .tab.active {
+            background: #1e1e1e;
+            border-top: 2px solid #007acc;
+        }
+
+        .tab .close {
+            color: #858585;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .tab .close:hover {
+            color: #cccccc;
+        }
+
+        /* 工具栏 */
+        .toolbar {
+            height: 40px;
+            background: #2d2d2d;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            border-bottom: 1px solid #1e1e1e;
+            gap: 8px;
+        }
+
+        .tool-btn {
+            width: 28px;
+            height: 28px;
+            background: #3c3c3c;
+            border: 1px solid #555555;
+            border-radius: 3px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #cccccc;
+            transition: all 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: #505050;
+            border-color: #cccccc;
+        }
+
+        .separator {
+            width: 1px;
+            height: 24px;
+            background: #555555;
+        }
+
+        /* 内容区域 */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 上半部分 - 复杂Tree-Grid表格 */
+        .tree-grid-section {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #1e1e1e;
+            overflow: hidden;
+        }
+
+        .section-header {
+            height: 30px;
+            background: #252526;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 12px;
+            font-weight: bold;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .tree-grid-container {
+            flex: 1;
+            overflow: auto;
+            background: #1e1e1e;
+        }
+
+        /* Tree-Grid表格 */
+        .tree-grid {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .tree-grid th {
+            background: #252526;
+            color: #999999;
+            font-weight: normal;
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #3c3c3c;
+            border-right: 1px solid #3c3c3c;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .tree-grid td {
+            padding: 6px 12px;
+            border-bottom: 1px solid #2d2d2d;
+            border-right: 1px solid #2d2d2d;
+            color: #d4d4d4;
+        }
+
+        .tree-grid tr:hover td {
+            background: #2a2d2e;
+        }
+
+        .tree-grid .selected td {
+            background: #094771;
+        }
+
+        .tree-grid .condition-cell {
+            color: #4ec9b0;
+        }
+
+        .tree-grid .branch-cell {
+            color: #dcdcaa;
+        }
+
+        .tree-grid .arrow {
+            color: #858585;
+            cursor: pointer;
+            font-size: 10px;
+            margin-right: 4px;
+        }
+
+        .tree-grid .tree-line {
+            color: #3c3c3c;
+            margin-right: 8px;
+        }
+
+        /* 下半部分 - 属性数据表格 */
+        .properties-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .properties-container {
+            flex: 1;
+            overflow: auto;
+            background: #1e1e1e;
+        }
+
+        .properties-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .properties-table th {
+            background: #252526;
+            color: #999999;
+            font-weight: normal;
+            padding: 6px 12px;
+            text-align: left;
+            border-bottom: 1px solid #3c3c3c;
+            border-right: 1px solid #3c3c3c;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .properties-table td {
+            padding: 6px 12px;
+            border-bottom: 1px solid #2d2d2d;
+            border-right: 1px solid #2d2d2d;
+            color: #d4d4d4;
+        }
+
+        .properties-table tr:hover td {
+            background: #2a2d2e;
+        }
+
+        .properties-table .type-int {
+            color: #4ec9b0;
+        }
+
+        .properties-table .type-string {
+            color: #ce9178;
+        }
+
+        .properties-table .type-float {
+            color: #b5cea8;
+        }
+
+        /* 底部控制台 */
+        .console-panel {
+            height: 180px;
+            background: #1e1e1e;
+            border-top: 1px solid #1e1e1e;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-header {
+            height: 28px;
+            background: #252526;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 11px;
+            color: #999999;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .console-content {
+            flex: 1;
+            overflow: auto;
+            padding: 8px 12px;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .log-line {
+            color: #999999;
+        }
+
+        .log-line .time {
+            color: #569cd6;
+        }
+
+        .log-line .level-info {
+            color: #4ec9b0;
+        }
+
+        .log-line .level-warn {
+            color: #dcdcaa;
+        }
+
+        .log-line .level-error {
+            color: #f14c4c;
+        }
+
+        .log-line .message {
+            color: #d4d4d4;
+        }
+
+        /* 状态栏 */
+        .status-bar {
+            height: 24px;
+            background: #007acc;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 11px;
+            color: #ffffff;
+            justify-content: flex-end;
+            gap: 20px;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #424242;
+            border-radius: 0;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4f4f4f;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: #1e1e1e;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部菜单栏 -->
+    <div class="menu-bar">
+        <div class="menu-item">文件(F)</div>
+        <div class="menu-item">编辑(E)</div>
+        <div class="menu-item">视图(V)</div>
+        <div class="menu-item">工具(T)</div>
+        <div class="menu-item">策略(S)</div>
+        <div class="menu-item">回测(B)</div>
+        <div class="menu-item">实盘(T)</div>
+        <div class="menu-item">帮助(H)</div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 左侧边栏 -->
+        <div class="left-sidebar">
+            <div class="sidebar-header">
+                <span>📁 策略文件树</span>
+            </div>
+            <div class="sidebar-content" id="sidebarTree">
+                <!-- 树形控件 -->
+                <div class="tree-item folder">
+                    <span class="arrow">▼</span>
+                    <span class="icon">📁</span>
+                    <span class="text">策略库</span>
+                </div>
+                <div class="tree-children">
+                    <div class="tree-item folder">
+                        <span class="arrow">▼</span>
+                        <span class="icon">📁</span>
+                        <span class="text">趋势策略</span>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="tree-children">
+                        <div class="tree-item file">
+                            <span class="arrow"></span>
+                            <span class="icon">📄</span>
+                            <span class="text">双均线策略.xml</span>
+                        </div>
+                        <div class="tree-item file selected">
+                            <span class="arrow"></span>
+                            <span class="icon">📄</span>
+                            <span class="text">MACD策略.xml</span>
+                        </div>
+                        <div class="tree-item file">
+                            <span class="arrow"></span>
+                            <span class="icon">📄</span>
+                            <span class="text">KDJ策略.xml</span>
+                        </div>
+                    </div>
+                    <div class="tree-item folder">
+                        <span class="arrow">▶</span>
+                        <span class="icon">📁</span>
+                        <span class="text">套利策略</span>
+                        <span class="badge">2</span>
+                    </div>
+                    <div class="tree-item folder">
+                        <span class="arrow">▶</span>
+                        <span class="icon">📁</span>
+                        <span class="text">量化对冲</span>
+                        <span class="badge">5</span>
+                    </div>
+                </div>
+                <div class="tree-item folder">
+                    <span class="arrow">▶</span>
+                    <span class="icon">📁</span>
+                    <span class="text">数据源</span>
+                </div>
+                <div class="tree-item folder">
+                    <span class="arrow">▶</span>
+                    <span class="icon">📁</span>
+                    <span class="text">合约池</span>
+                </div>
+                <div class="tree-item folder">
+                    <span class="arrow">▶</span>
+                    <span class="icon">📁</span>
+                    <span class="text">历史记录</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主工作区 -->
+        <div class="main-workspace">
+            <!-- 多标签页导航 -->
+            <div class="tabs-bar">
+                <div class="tab active">
+                    <span>📄</span>
+                    <span>MACD策略.xml</span>
+                    <span class="close">×</span>
+                </div>
+                <div class="tab">
+                    <span>📄</span>
+                    <span>策略参数配置</span>
+                    <span class="close">×</span>
+                </div>
+                <div class="tab">
+                    <span>📄</span>
+                    <span>回测报告</span>
+                    <span class="close">×</span>
+                </div>
+            </div>
+
+            <!-- 工具栏 -->
+            <div class="toolbar">
+                <button class="tool-btn">📁</button>
+                <button class="tool-btn">💾</button>
+                <div class="separator"></div>
+                <button class="tool-btn">↶</button>
+                <button class="tool-btn">↷</button>
+                <div class="separator"></div>
+                <button class="tool-btn">➕</button>
+                <button class="tool-btn">➖</button>
+                <div class="separator"></div>
+                <button class="tool-btn">▶</button>
+                <button class="tool-btn">⏸</button>
+                <button class="tool-btn">🛑</button>
+                <div class="separator"></div>
+                <button class="tool-btn">🔍</button>
+                <button class="tool-btn">⚙</button>
+            </div>
+
+            <!-- 内容区域 -->
+            <div class="content-area">
+                <!-- 上半部分 - Tree-Grid表格 -->
+                <div class="tree-grid-section">
+                    <div class="section-header">
+                        <span>🌳 策略条件树</span>
+                    </div>
+                    <div class="tree-grid-container">
+                        <table class="tree-grid">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;">展开</th>
+                                    <th style="width: 80px;">行号</th>
+                                    <th style="width: 150px;">条件分支</th>
+                                    <th style="width: 300px;">条件表达式</th>
+                                    <th>说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="arrow">▼</span></td>
+                                    <td>1</td>
+                                    <td class="branch-cell">AND</td>
+                                    <td class="condition-cell">行情数据.收盘价</td>
+                                    <td>价格条件</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="tree-line">├</span></td>
+                                    <td>1.1</td>
+                                    <td class="branch-cell">AND</td>
+                                    <td class="condition-cell">MACD(12,26,9).DIF > MACD(12,26,9).DEA</td>
+                                    <td>金叉信号</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="tree-line">├</span></td>
+                                    <td>1.2</td>
+                                    <td class="branch-cell">AND</td>
+                                    <td class="condition-cell">MACD(12,26,9).DIF > 0</td>
+                                    <td>零轴上方</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="tree-line">├</span></td>
+                                    <td>1.3</td>
+                                    <td class="branch-cell">OR</td>
+                                    <td class="condition-cell">成交量.MA(5) > 成交量.MA(10)</td>
+                                    <td>量能放大</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="tree-line">└</span></td>
+                                    <td>1.4</td>
+                                    <td class="branch-cell">-</td>
+                                    <td class="condition-cell">振幅 < 3%</td>
+                                    <td>波动控制</td>
+                                </tr>
+                                <tr class="selected">
+                                    <td><span class="arrow">▼</span></td>
+                                    <td>2</td>
+                                    <td class="branch-cell">AND</td>
+                                    <td class="condition-cell">行情数据.开仓价</td>
+                                    <td>开仓条件</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="tree-line">├</span></td>
+                                    <td>2.1</td>
+                                    <td class="branch-cell">-</td>
+                                    <td class="condition-cell">止损价 = 入场价 * 0.95</td>
+                                    <td>止损设置</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="tree-line">└</span></td>
+                                    <td>2.2</td>
+                                    <td class="branch-cell">-</td>
+                                    <td class="condition-cell">止盈价 = 入场价 * 1.08</td>
+                                    <td>止盈设置</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="arrow">▶</span></td>
+                                    <td>3</td>
+                                    <td class="branch-cell">AND</td>
+                                    <td class="condition-cell">资金管理</td>
+                                    <td>仓位控制</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 下半部分 - 属性数据表格 -->
+                <div class="properties-section">
+                    <div class="section-header">
+                        <span>📊 字段属性表</span>
+                    </div>
+                    <div class="properties-container">
+                        <table class="properties-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 60px;">序号</th>
+                                    <th style="width: 100px;">字段属性</th>
+                                    <th style="width: 200px;">字段名称</th>
+                                    <th style="width: 120px;">数据类型</th>
+                                    <th>说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>行情数据</td>
+                                    <td>收盘价</td>
+                                    <td class="type-float">float</td>
+                                    <td>最新收盘价格</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>行情数据</td>
+                                    <td>开盘价</td>
+                                    <td class="type-float">float</td>
+                                    <td>最新开盘价格</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>行情数据</td>
+                                    <td>最高价</td>
+                                    <td class="type-float">float</td>
+                                    <td>最高成交价</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>行情数据</td>
+                                    <td>最低价</td>
+                                    <td class="type-float">float</td>
+                                    <td>最低成交价</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>行情数据</td>
+                                    <td>成交量</td>
+                                    <td class="type-int">int</td>
+                                    <td>成交手数</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>技术指标</td>
+                                    <td>MACD.DIF</td>
+                                    <td class="type-float">float</td>
+                                    <td>DIF指标值</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>技术指标</td>
+                                    <td>MACD.DEA</td>
+                                    <td class="type-float">float</td>
+                                    <td>DEA指标值</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>技术指标</td>
+                                    <td>成交量.MA</td>
+                                    <td class="type-float">float</td>
+                                    <td>成交量均线</td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>合约属性</td>
+                                    <td>合约代码</td>
+                                    <td class="type-string">string</td>
+                                    <td>IC2602</td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td>合约属性</td>
+                                    <td>合约名称</td>
+                                    <td class="type-string">string</td>
+                                    <td>中证500 2402</td>
+                                </tr>
+                                <tr>
+                                    <td>11</td>
+                                    <td>计算字段</td>
+                                    <td>止损价</td>
+                                    <td class="type-float">float</td>
+                                    <td>动态止损价格</td>
+                                </tr>
+                                <tr>
+                                    <td>12</td>
+                                    <td>计算字段</td>
+                                    <td>止盈价</td>
+                                    <td class="type-float">float</td>
+                                    <td>动态止盈价格</td>
+                                </tr>
+                                <tr>
+                                    <td>13</td>
+                                    <td>资金管理</td>
+                                    <td>仓位比例</td>
+                                    <td class="type-float">float</td>
+                                    <td>当前持仓比例</td>
+                                </tr>
+                                <tr>
+                                    <td>14</td>
+                                    <td>资金管理</td>
+                                    <td>可用资金</td>
+                                    <td class="type-float">float</td>
+                                    <td>账户可用余额</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部控制台 -->
+    <div class="console-panel">
+        <div class="console-header">
+            <span>📋 日志输出</span>
+            <span style="margin-left: auto;">[编译] [执行] [查找]</span>
+        </div>
+        <div class="console-content" id="consoleContent">
+            <div class="log-line"><span class="time">[2026-05-26 14:23:15.623]</span> <span class="level-info">[Info]</span> <span class="message">开始加载策略文件: MACD策略.xml</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:15.645]</span> <span class="level-info">[Info]</span> <span class="message">策略文件加载成功</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:15.678]</span> <span class="level-info">[Info]</span> <span class="message">开始解析策略条件树...</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:15.702]</span> <span class="level-info">[Info]</span> <span class="message">条件树解析完成，共3个主节点</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:15.725]</span> <span class="level-info">[Info]</span> <span class="message">初始化技术指标: MACD(12,26,9)</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:15.748]</span> <span class="level-info">[Info]</span> <span class="message">初始化技术指标: 成交量.MA(5)</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:15.771]</span> <span class="level-info">[Info]</span> <span class="message">连接数据中心...</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:16.012]</span> <span class="level-info">[Info]</span> <span class="message">数据中心连接成功</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:16.035]</span> <span class="level-info">[Info]</span> <span class="message">订阅合约行情: IC2602</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:16.058]</span> <span class="level-warn">[Warn]</span> <span class="message">市场处于非交易时段</span></div>
+            <div class="log-line"><span class="time">[2026-05-26 14:23:16.081]</span> <span class="level-info">[Info]</span> <span class="message">策略加载完成，准备就绪</span></div>
+        </div>
+    </div>
+
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <span>因子: 2ms</span>
+        <span>服务: 1ms</span>
+        <span>数据: 3ms</span>
+        <span>Ln 1, Col 1</span>
+        <span>UTF-8</span>
+        <span>策略模式</span>
+    </div>
+
+    <script>
+        // 树形控件展开/折叠
+        document.querySelectorAll('.tree-item').forEach(item => {
+            const arrow = item.querySelector('.arrow');
+            if (!arrow) return;
+
+            arrow.addEventListener('click', function(e) {
+                e.stopPropagation();
+
+                const parent = item.parentElement;
+                if (parent.classList.contains('tree-children')) {
+                    const nextSibling = item.nextElementSibling;
+                    if (nextSibling && nextSibling.classList.contains('tree-children')) {
+                        nextSibling.classList.toggle('hidden');
+                        if (this.textContent === '▼') {
+                            this.textContent = '▶';
+                        } else {
+                            this.textContent = '▼';
+                        }
+                    }
+                }
+            });
+        });
+
+        // Tree-Grid展开/折叠
+        document.querySelectorAll('.tree-grid .arrow').forEach(arrow => {
+            arrow.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const currentRow = Array.from(row.parentElement.children).indexOf(row);
+                const arrowSymbol = this.textContent;
+
+                if (arrowSymbol === '▼') {
+                    this.textContent = '▶';
+                } else {
+                    this.textContent = '▼';
+                }
+            });
+        });
+
+        // Tab切换
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 表格行选择
+        document.querySelectorAll('.tree-grid tr, .properties-table tr').forEach(row => {
+            row.addEventListener('click', function() {
+                const table = this.closest('table');
+                table.querySelectorAll('.selected').forEach(r => r.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -38,8 +38,8 @@
 
         /* 弹窗容器 */
         .modal {
-            width: 1300px;
-            height: 600px;
+            width: 1400px;
+            height: 700px;
             background: #1E1E1E;
             border: 1px solid #444444;
             border-radius: 8px;
@@ -60,10 +60,12 @@
         }
 
         .modal-header .icon {
-            width: 20px;
-            height: 20px;
-            background: #d22d8d;
-            border-radius: 3px;
+            width: 24px;
+            height: 24px;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAIAAAACtmMCAAADY0lEQVR4nK1WW0gUURg+Z2b2Npvuul5KRKJdNW+7aZIh1WJiN8UMIsgXiy6yQb10eQgqKOohJIKMKCGwQNIEM5N1N3dLoRsGPnQxrNwyzXvUru2ss+3OxHjGmXFzvZA/5+E/83/z/d9//nPODDQaswAAEMLi0tKS4iK93kCSKrAYoyify9Xb3GK1Nj9kWRYYjVnm/EKbo539b7M52s35hcBkyrY7O9glMruzgyjaWbq1wIz0s25P8Esf8vFkA1STyGfGfzADg3yRCgW+MjH48bNQNZGZBggC+RzVi1edPD/DjJs2DAMtGnTbUyGzt6paeD6akOZ/3SVMh4HWd7eObnUwNI3AhF5v4AV6qcCb90LmiVPnsGgd8oN9/XN0xl1uAQDEDvXAFXGcZLGzchl58hhg2X/fIbKMgo9FaUOiWmsDHr8ci43mwWIkyATeds+hhWeM0cm3FUifeMotAMej3zzD4mJDGIN+u1OqS6y6/7vQCiwhPuLyefLE0ZBMUMXXKmGcaYotmwlTBvJpu1PaXNbrDbz7IEw1tdVC7rkYvZXXwoUYz4S0mp+bdgC5PMrRhMVwS4mFe01Tdzt2qAeNZRfPhINxOzdJT6SmwOktGVaju+wQwKbzMcwcjMTaNZhWAxSKeRiXXToryzYhn37USt24jXwIIYBQivSevwwAUO7dDVVKDuD5TUWop9rEMMzomIDDdFFALhc1SmSylO/P6y5RoymD26Q4jjKJGlnPxFh8qjCNansQeNvNjIwByAnjB+IfGPTduScglXt24SkG9enj6B6QVI1hUBMpWR7Cd6sm0PMJzGeTDU0AAPJoRSgjJFWRN6+KhBmi3kUZIVY9SbvLDkqrluJUFftVh8uRH+zuce87IoQiKi/INuZhMbp5eh1i3NX59RtXilqNp6+Whv50djG/3IQxHW3JhTJO1jdO1jeic61tqpWG6BYbkMvJY/w6hj0zCzfN/Zq4X33Ycu5y5BgpyjcrznvlenB4RJgqSrbLcnNmRVJV1R7Lcfa3l2d0uXqRB0kVsSZTwPltTtbtEaay3BwiLWVWRv/jJ367Ex0Ybh2bW6x569dNkWO65/Zwly6emMDStMpyACoV+Opk3cu2GdGkVdyZQWYyZS/JxxqZzdHO/wEsySfb7uww5xf+Bc+iVshjcuxxAAAAAElFTkSuQmCC');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             margin-right: 10px;
         }
 
@@ -92,15 +94,6 @@
             color: #E0E0E0;
         }
 
-        /* 头部蓝色高亮线 */
-        .header-highlight {
-            position: absolute;
-            left: 16px;
-            bottom: -1px;
-            width: 30px;
-            height: 2px;
-            background: #2196F3;
-        }
 
         /* 弹窗主体 */
         .modal-body {
@@ -194,10 +187,11 @@
             padding: 4px;
             margin-bottom: 12px;
             gap: 2px;
+            flex-wrap: wrap;
         }
 
         .tab {
-            padding: 8px 16px;
+            padding: 8px 14px;
             cursor: pointer;
             color: #888;
             font-size: 13px;
@@ -373,7 +367,8 @@
         }
 
         .footer-left {
-            margin-left: auto;
+            display: flex;
+            gap: 8px;
         }
 
         /* 统计信息 */
@@ -386,6 +381,73 @@
             color: #2196F3;
             font-weight: bold;
         }
+
+        /* 树形控件 */
+        .tree-view {
+            padding: 8px;
+        }
+
+        .tree-node {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .tree-node:hover {
+            background: #252525;
+        }
+
+        .tree-node.highlight {
+            background: #1565C0;
+        }
+
+        .tree-node .arrow {
+            width: 20px;
+            text-align: center;
+            color: #888;
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .tree-node .arrow.expanded {
+            transform: rotate(90deg);
+        }
+
+        .tree-node .indent {
+            display: inline-block;
+        }
+
+        .tree-node .checkbox {
+            margin-right: 8px;
+        }
+
+        .tree-node .add-icon {
+            color: #888;
+            font-size: 14px;
+            margin-right: 6px;
+            cursor: pointer;
+        }
+
+        .tree-node .add-icon:hover {
+            color: #2196F3;
+        }
+
+        .tree-node .text {
+            color: #E0E0E0;
+            font-size: 13px;
+        }
+
+        .tree-children {
+            margin-left: 20px;
+        }
+
+        .tree-children.hidden {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -396,7 +458,6 @@
                 <div class="icon"></div>
                 <div class="title">固定合约池</div>
                 <div class="close">×</div>
-                <div class="header-highlight"></div>
             </div>
 
             <!-- 弹窗主体 -->
@@ -446,15 +507,17 @@
                 <!-- 右侧面板 - 候选区域 -->
                 <div class="right-panel">
                     <div class="tabs">
-                        <div class="tab active">股指</div>
-                        <div class="tab">商品期货</div>
-                        <div class="tab">股票</div>
-                        <div class="tab">指数</div>
-                        <div class="tab">指数成分股</div>
-                        <div class="tab">ETF</div>
-                        <div class="tab">自定义组</div>
-                        <div class="tab">期权</div>
-                        <div class="tab">历史期货</div>
+                        <div class="tab" data-type="index">股指</div>
+                        <div class="tab" data-type="futures">商品期货</div>
+                        <div class="tab" data-type="stock">股票</div>
+                        <div class="tab" data-type="hkstock">港股通</div>
+                        <div class="tab" data-type="cnindex">指数</div>
+                        <div class="tab" data-type="commodity">商品指数</div>
+                        <div class="tab active" data-type="component">指数成分股</div>
+                        <div class="tab" data-type="etf">ETF</div>
+                        <div class="tab" data-type="custom">自定义组</div>
+                        <div class="tab" data-type="option">期权</div>
+                        <div class="tab" data-type="history">历史期货</div>
                     </div>
 
                     <div class="search-area">
@@ -463,25 +526,14 @@
                         <button class="btn">全选</button>
                     </div>
 
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th class="checkbox-cell"><div class="custom-checkbox" id="rightSelectAll"></div></th>
-                                    <th>代码</th>
-                                    <th>名称</th>
-                                    <th>板块<span class="sort-arrow">▼</span></th>
-                                </tr>
-                            </thead>
-                            <tbody id="rightTableBody">
-                                <!-- 数据将通过JS动态填充 -->
-                            </tbody>
-                        </table>
+                    <!-- 表格区域 - 动态切换 -->
+                    <div class="table-container" id="rightContentArea">
+                        <!-- 内容将通过JS动态填充 -->
                     </div>
 
                     <div class="panel-footer">
                         <div class="footer-left">
-                            <span class="stats">总计: <span class="value" id="totalCount">12</span></span>
+                            <span class="stats">总计: <span class="value" id="totalCount">0</span></span>
                         </div>
                         <div class="footer-right">
                             <button class="btn">导出</button>
@@ -493,51 +545,341 @@
     </div>
 
     <script>
-        // 候选数据
-        const candidateData = [
-            { code: 'IC0000', name: '中证500当月连续', board: '股指' },
-            { code: 'IC2606', name: '中证500 2406', board: '股指', selected: true },
-            { code: 'IC2607', name: '中证500 2407', board: '股指' },
-            { code: 'IC2608', name: '中证500 2408', board: '股指' },
-            { code: 'IC2609', name: '中证500 2409', board: '股指' },
-            { code: 'IC2610', name: '中证500 2410', board: '股指' },
-            { code: 'IC2611', name: '中证500 2411', board: '股指' },
-            { code: 'IC2612', name: '中证500 2412', board: '股指' },
-            { code: 'IF2606', name: '沪深300 2406', board: '股指' },
-            { code: 'IF2607', name: '沪深300 2407', board: '股指' },
-            { code: 'IF2608', name: '沪深300 2408', board: '股指' },
-            { code: 'IF2609', name: '沪深300 2409', board: '股指' },
-        ];
+        // 模拟数据
+        const mockData = {
+            index: [
+                { code: 'IC0000', name: '中证500当月连续', board: '股指' },
+                { code: 'IC2606', name: '中证500 2406', board: '股指' },
+                { code: 'IC2607', name: '中证500 2407', board: '股指' },
+                { code: 'IF2606', name: '沪深300 2406', board: '股指' },
+                { code: 'IF2607', name: '沪深300 2407', board: '股指' },
+                { code: 'IH2606', name: '上证50 2406', board: '股指' },
+                { code: 'IM2606', name: '中证1000 2406', board: '股指' },
+            ],
+            hkstock: [
+                { code: '00001HK', name: '长和' },
+                { code: '00002HK', name: '中电控股' },
+                { code: '00005HK', name: '汇丰控股' },
+                { code: '00700HK', name: '腾讯控股' },
+                { code: '00941HK', name: '中国移动' },
+                { code: '01299HK', name: '友邦保险' },
+                { code: '02318HK', name: '中国平安' },
+                { code: '09888HK', name: '阿里巴巴' },
+            ],
+            commodity: [
+                { code: 'NHA0000', name: '南华农产品[指数]', board: '南华' },
+                { code: 'NHC0000', name: '南华商品[指数]', board: '南华' },
+                { code: 'NHA0001', name: '南华金属[指数]', board: '南华' },
+                { code: 'NHA0002', name: '南华能化[指数]', board: '南华' },
+                { code: 'NHA0003', name: '南华黑色[指数]', board: '南华' },
+                { code: 'NHA0004', name: '南华贵金属[指数]', board: '南华' },
+                { code: 'NHA0005', name: '南华工业品[指数]', board: '南华' },
+            ]
+        };
 
-        // 已选数据
-        let selectedData = [
+        // 树形数据
+        const treeData = {
+            root: [
+                {
+                    id: 1,
+                    text: '000905SH 中证500历史成分股',
+                    arrow: '▶',
+                    children: []
+                },
+                {
+                    id: 2,
+                    text: '000905SH 中证500最新成分股',
+                    arrow: '▶',
+                    children: []
+                },
+                {
+                    id: 3,
+                    text: '同花顺指数最新成分股',
+                    arrow: '▼',
+                    expanded: true,
+                    children: [
+                        {
+                            id: 4,
+                            text: '概念指数',
+                            arrow: '▶',
+                            children: []
+                        },
+                        {
+                            id: 5,
+                            text: '行业指数',
+                            arrow: '▶',
+                            children: []
+                        },
+                        {
+                            id: 6,
+                            text: '地域指数',
+                            arrow: '▶',
+                            children: []
+                        },
+                        {
+                            id: 7,
+                            text: '特色指数',
+                            arrow: '▼',
+                            expanded: true,
+                            children: [
+                                {
+                                    id: 8,
+                                    text: '883400TI 昨日ST首板股表现',
+                                    arrow: '▶',
+                                    hasAddIcon: true,
+                                    children: []
+                                },
+                                {
+                                    id: 9,
+                                    text: '883403TI 佛山',
+                                    arrow: '▶',
+                                    hasAddIcon: true,
+                                    children: []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 10,
+                    text: '选股通指数最新成分股',
+                    arrow: '▼',
+                    expanded: true,
+                    children: [
+                        {
+                            id: 11,
+                            text: '行业指数',
+                            arrow: '▶',
+                            children: []
+                        },
+                        {
+                            id: 12,
+                            text: '概念指数',
+                            arrow: '▶',
+                            children: []
+                        },
+                        {
+                            id: 13,
+                            text: '风格指数',
+                            arrow: '▶',
+                            children: []
+                        }
+                    ]
+                },
+                {
+                    id: 14,
+                    text: '能化指数最新成分股',
+                    arrow: '▼',
+                    expanded: true,
+                    children: [
+                        {
+                            id: 15,
+                            text: '换手率指数',
+                            arrow: '▶',
+                            children: []
+                        },
+                        {
+                            id: 16,
+                            text: '跌停指数',
+                            arrow: '▶',
+                            children: []
+                        }
+                    ]
+                }
+            ]
+        };
+
+        let currentType = 'component';
+        let selectedItems = [
             { code: 'IC2606', name: '中证500股指...', isTrading: false }
         ];
 
-        // 渲染右侧表格
-        function renderRightTable() {
-            const tbody = document.getElementById('rightTableBody');
-            tbody.innerHTML = candidateData.map((item, index) => `
-                <tr data-index="${index}">
-                    <td class="checkbox-cell">
-                        <div class="custom-checkbox ${item.selected ? 'checked' : ''}"
-                             data-code="${item.code}"
-                             data-name="${item.name}"
-                             data-board="${item.board}"
-                             onclick="toggleSelect(this, ${index})"></div>
-                    </td>
-                    <td>${item.code}</td>
-                    <td>${item.name}</td>
-                    <td>${item.board}</td>
-                </tr>
-            `).join('');
+        // Tab切换
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentType = this.dataset.type;
+                renderRightContent();
+            });
+        });
 
-            document.getElementById('totalCount').textContent = candidateData.length;
+        // 渲染右侧内容
+        function renderRightContent() {
+            const container = document.getElementById('rightContentArea');
+
+            if (currentType === 'component') {
+                // 场景C：树形控件
+                renderTreeView(container);
+                document.getElementById('totalCount').textContent = countTreeNodes(treeData.root);
+            } else if (currentType === 'hkstock') {
+                // 场景B：港股通（3列，无板块列）
+                renderTable(container, mockData.hkstock, false);
+            } else {
+                // 场景A：标准表格（4列，有板块列）
+                const data = mockData[currentType] || [];
+                renderTable(container, data, true);
+            }
+        }
+
+        // 渲染标准表格
+        function renderTable(container, data, showBoard) {
+            const table = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"><div class="custom-checkbox" id="rightSelectAll"></div></th>
+                            <th>代码</th>
+                            <th>名称</th>
+                            ${showBoard ? '<th>板块<span class="sort-arrow">▼</span></th>' : ''}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map((item, index) => `
+                            <tr data-index="${index}">
+                                <td class="checkbox-cell">
+                                    <div class="custom-checkbox"
+                                         data-code="${item.code}"
+                                         data-name="${item.name}"
+                                         data-board="${item.board || ''}"
+                                         onclick="toggleSelect(this, ${index})"></div>
+                                </td>
+                                <td>${item.code}</td>
+                                <td>${item.name}</td>
+                                ${showBoard ? `<td>${item.board || ''}</td>` : ''}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            container.innerHTML = table;
+            document.getElementById('totalCount').textContent = data.length;
+        }
+
+        // 渲染树形控件
+        function renderTreeView(container) {
+            const html = `
+                <div class="tree-view">
+                    ${renderTreeNodes(treeData.root, 0)}
+                </div>
+            `;
+            container.innerHTML = html;
+
+            // 绑定树形控件事件
+            bindTreeEvents();
+        }
+
+        // 递归渲染树节点
+        function renderTreeNodes(nodes, level) {
+            return nodes.map(node => {
+                const indent = level > 0 ? `<span class="indent" style="width: ${level * 20}px;"></span>` : '';
+                const expandedClass = node.expanded ? 'expanded' : '';
+                const addIcon = node.hasAddIcon ? '<span class="add-icon">⊕</span>' : '';
+                const childrenClass = node.expanded ? '' : 'hidden';
+
+                const nodeHtml = `
+                    <div class="tree-node" data-id="${node.id}" data-expanded="${node.expanded || false}">
+                        ${indent}
+                        <span class="arrow ${expandedClass}">${node.arrow}</span>
+                        <span class="checkbox"><div class="custom-checkbox"></div></span>
+                        ${addIcon}
+                        <span class="text">${node.text}</span>
+                    </div>
+                `;
+
+                const childrenHtml = node.children && node.children.length > 0 ? `
+                    <div class="tree-children ${childrenClass}" data-parent-id="${node.id}">
+                        ${renderTreeNodes(node.children, level + 1)}
+                    </div>
+                ` : '';
+
+                return nodeHtml + childrenHtml;
+            }).join('');
+        }
+
+        // 绑定树形控件事件
+        function bindTreeEvents() {
+            // 展开/折叠
+            document.querySelectorAll('.tree-node .arrow').forEach(arrow => {
+                arrow.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const node = this.closest('.tree-node');
+                    const nodeId = node.dataset.id;
+                    const childrenContainer = document.querySelector(`.tree-children[data-parent-id="${nodeId}"]`);
+
+                    if (childrenContainer) {
+                        childrenContainer.classList.toggle('hidden');
+                        this.classList.toggle('expanded');
+                        node.dataset.expanded = childrenContainer.classList.contains('hidden') ? 'false' : 'true';
+                    }
+                });
+            });
+
+            // 点击节点
+            document.querySelectorAll('.tree-node').forEach(node => {
+                node.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('arrow') || e.target.classList.contains('custom-checkbox') || e.target.classList.contains('add-icon')) {
+                        return;
+                    }
+
+                    // 移除其他节点高亮
+                    document.querySelectorAll('.tree-node').forEach(n => {
+                        if (!n.classList.contains('root-highlight')) {
+                            n.classList.remove('highlight');
+                        }
+                    });
+
+                    if (!this.classList.contains('root-highlight')) {
+                        this.classList.add('highlight');
+                    }
+                });
+            });
+        }
+
+        // 计算树节点数量
+        function countTreeNodes(nodes) {
+            let count = 0;
+            nodes.forEach(node => {
+                count++;
+                if (node.children) {
+                    count += countTreeNodes(node.children);
+                }
+            });
+            return count;
+        }
+
+        // 切换右侧复选框
+        function toggleSelect(checkbox, index) {
+            const data = mockData[currentType] || [];
+            const item = data[index];
+
+            if (checkbox.classList.contains('checked')) {
+                checkbox.classList.remove('checked');
+
+                // 从左侧移除
+                selectedItems = selectedItems.filter(d => d.code !== item.code);
+            } else {
+                checkbox.classList.add('checked');
+
+                // 添加到左侧
+                const exists = selectedItems.find(d => d.code === item.code);
+                if (!exists) {
+                    selectedItems.push({
+                        code: item.code,
+                        name: item.name,
+                        isTrading: false
+                    });
+                }
+            }
+
+            renderLeftTable();
         }
 
         // 渲染左侧表格
         function renderLeftTable() {
             const tbody = document.getElementById('leftTableBody');
+            document.getElementById('selectedCount').textContent = selectedItems.length;
+
             if (selectedData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
@@ -550,9 +892,7 @@
                 tbody.innerHTML = selectedData.map((item, index) => `
                     <tr data-index="${index}">
                         <td class="checkbox-cell">
-                            <div class="custom-checkbox"
-                                 data-code="${item.code}"
-                                 onclick="toggleLeftSelect(this, ${index})"></div>
+                            <div class="custom-checkbox"></div>
                         </td>
                         <td>${item.code}</td>
                         <td>${item.name}</td>
@@ -560,81 +900,39 @@
                     </tr>
                 `).join('');
             }
-
-            document.getElementById('selectedCount').textContent = selectedData.length;
-        }
-
-        // 切换右侧复选框
-        function toggleSelect(checkbox, index) {
-            const item = candidateData[index];
-
-            if (checkbox.classList.contains('checked')) {
-                // 取消选中
-                checkbox.classList.remove('checked');
-                item.selected = false;
-
-                // 从左侧移除
-                selectedData = selectedData.filter(d => d.code !== item.code);
-            } else {
-                // 选中
-                checkbox.classList.add('checked');
-                item.selected = true;
-
-                // 添加到左侧
-                const exists = selectedData.find(d => d.code === item.code);
-                if (!exists) {
-                    selectedData.push({
-                        code: item.code,
-                        name: item.name,
-                        isTrading: false
-                    });
-                }
-            }
-
-            renderLeftTable();
-        }
-
-        // 切换左侧复选框
-        function toggleLeftSelect(checkbox, index) {
-            const item = selectedData[index];
-            const rightIndex = candidateData.findIndex(d => d.code === item.code);
-
-            if (checkbox.classList.contains('checked')) {
-                checkbox.classList.remove('checked');
-            } else {
-                checkbox.classList.add('checked');
-            }
         }
 
         // 右侧全选
-        document.getElementById('rightSelectAll').addEventListener('click', function() {
-            const isChecked = this.classList.toggle('checked');
-            const checkboxes = document.querySelectorAll('#rightTableBody .custom-checkbox');
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'rightSelectAll') {
+                const checkbox = e.target;
+                const isChecked = checkbox.classList.toggle('checked');
+                const checkboxes = document.querySelectorAll('#rightContentArea tbody .custom-checkbox');
 
-            checkboxes.forEach((checkbox, index) => {
-                const item = candidateData[index];
+                checkboxes.forEach(cb => {
+                    const code = cb.dataset.code;
+                    const name = cb.dataset.name;
 
-                if (isChecked) {
-                    checkbox.classList.add('checked');
-                    item.selected = true;
+                    if (isChecked) {
+                        cb.classList.add('checked');
 
-                    const exists = selectedData.find(d => d.code === item.code);
-                    if (!exists) {
-                        selectedData.push({
-                            code: item.code,
-                            name: item.name,
-                            isTrading: false
-                        });
+                        const exists = selectedItems.find(d => d.code === code);
+                        if (!exists) {
+                            selectedItems.push({
+                                code: code,
+                                name: name,
+                                isTrading: false
+                            });
+                        }
+                    } else {
+                        cb.classList.remove('checked');
+
+                        selectedItems = selectedItems.filter(d => d.code !== code);
                     }
-                } else {
-                    checkbox.classList.remove('checked');
-                    item.selected = false;
+                });
 
-                    selectedData = selectedData.filter(d => d.code !== item.code);
-                }
-            });
-
-            renderLeftTable();
+                renderLeftTable();
+            }
         });
 
         // 左侧全选
@@ -656,8 +954,7 @@
             selectedData = [];
 
             // 取消右侧所有选中
-            candidateData.forEach(item => item.selected = false);
-            document.querySelectorAll('#rightTableBody .custom-checkbox').forEach(checkbox => {
+            document.querySelectorAll('#rightContentArea tbody .custom-checkbox').forEach(checkbox => {
                 checkbox.classList.remove('checked');
             });
 
@@ -669,31 +966,21 @@
             const checkedItems = document.querySelectorAll('#leftTableBody .custom-checkbox.checked');
 
             checkedItems.forEach(checkbox => {
-                const code = checkbox.dataset.code;
+                const row = checkbox.closest('tr');
+                const index = row.dataset.index;
+                const item = selectedData[index];
 
                 // 从左侧移除
-                selectedData = selectedData.filter(d => d.code !== code);
+                selectedData = selectedData.filter((d, i) => i !== index);
 
                 // 取消右侧对应项选中
-                const rightIndex = candidateData.findIndex(d => d.code === code);
-                if (rightIndex !== -1) {
-                    candidateData[rightIndex].selected = false;
-                    const rightCheckbox = document.querySelector(`#rightTableBody .custom-checkbox[data-code="${code}"]`);
-                    if (rightCheckbox) {
-                        rightCheckbox.classList.remove('checked');
-                    }
+                const rightCheckbox = document.querySelector(`#rightContentArea .custom-checkbox[data-code="${item.code}"]`);
+                if (rightCheckbox) {
+                    rightCheckbox.classList.remove('checked');
                 }
             });
 
             renderLeftTable();
-        });
-
-        // Tab切换
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
         });
 
         // 关闭按钮
@@ -707,8 +994,7 @@
         });
 
         // 初始化
-        renderRightTable();
-        renderLeftTable();
+        renderRightContent();
     </script>
 </body>
 </html>
