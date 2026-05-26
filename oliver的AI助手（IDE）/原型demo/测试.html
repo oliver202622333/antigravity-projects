@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户管理 - 系统后台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 h-screen flex overflow-hidden">
+  <!-- 左侧侧边栏 -->
+  <aside id="sidebar" class="bg-gray-800 text-white w-64 flex-shrink-0 transition-all duration-300">
+    <div class="p-4 border-b border-gray-700">
+      <h1 class="text-xl font-bold flex items-center gap-2">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm1 17h-2v-2h2zm2.07-7.75l-.9.92C11.45 10.9 11 11.5 11 13H9v-.25c0-1.06.47-2.07 1.3-2.75l1.24-1.05c.45-.38.75-1 .75-1.6 0-1.1-.9-2-2-2s-2 .9-2 2H6c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+        </svg>
+        <span id="logoText">系统后台</span>
+      </h1>
+    </div>
+    <nav class="p-2">
+      <div class="py-2 px-3 text-gray-400 text-xs uppercase">主菜单</div>
+      <a href="#" class="flex items-center gap-3 p-3 rounded bg-gray-700 text-white">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+        </svg>
+        <span class="menu-text">用户管理</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded hover:bg-gray-700 transition-colors mt-1">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2h6V4H4zm0 8a2 2 0 00-2 2v4a2 2 0 002 2h6v-8H4zm10 0v8h6a2 2 0 002-2v-4a2 2 0 00-2-2h-6zm6-4V6a2 2 0 00-2-2h-6v8h6a2 2 0 002-2z"/>
+        </svg>
+        <span class="menu-text">部门管理</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded hover:bg-gray-700 transition-colors mt-1">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
+        </svg>
+        <span class="menu-text">角色权限</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded hover:bg-gray-700 transition-colors mt-1">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm12 1H8a1 1 0 100 2h7a1 1 0 100-2zm0 3H8a1 1 0 100 2h7a1 1 0 100-2zM5 8a1 1 0 100 2h1a1 1 0 100-2H5zm0 3a1 1 0 100 2h1a1 1 0 100-2H5z" clip-rule="evenodd"/>
+        </svg>
+        <span class="menu-text">操作日志</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded hover:bg-gray-700 transition-colors mt-1">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.28.94c-1.54-.99-3.46.44-2.47 2.01-.1.33-.16.68-.16 1.02s.06.69.16 1.02c-.99 1.58.93 3 2.47 2.01.73.48 1.66.22 2.28.94.38 1.56 2.6 1.56 2.98 0 .62-.72 1.56-.46 2.28-.94 1.54.99 3.46-.44 2.47-2.01.1-.33.16-.68.16-1.02s-.06-.69.16-1.02c.99-1.58-.93-3-2.47-2.01-.73-.48-1.66-.22-2.28-.94zM10 12a2 2 0 110-4 2 2 0 010 4z" clip-rule="evenodd"/>
+        </svg>
+        <span class="menu-text">系统设置</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- 主内容区域 -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm border-b border-gray-200 h-16 flex items-center justify-between px-6">
+      <div class="flex items-center gap-4">
+        <button id="toggleSidebar" class="p-2 rounded hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <div class="relative">
+          <input type="text" placeholder="全局搜索..." class="pl-10 pr-4 py-2 border rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button class="relative p-2 rounded hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+          <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+        <div class="relative" id="userMenu">
+          <button id="userMenuToggle" class="flex items-center gap-2 p-2 rounded hover:bg-gray-100">
+            <img src="https://placehold.co/32x32" class="w-8 h-8 rounded-full" alt="">
+            <span>管理员</span>
+            <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div id="userDropdown" class="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border hidden">
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded-t-lg">个人设置</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">修改密码</a>
+            <a href="#" class="block px-4 py-2 text-red-600 hover:bg-gray-100 rounded-b-lg">退出登录</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="flex-1 overflow-auto p-6">
+      <!-- 面包屑 -->
+      <div class="text-sm text-gray-500 mb-4">
+        <a href="#" class="hover:text-blue-600">首页</a>
+        <span class="mx-1">/</span>
+        <span class="text-gray-700">用户管理</span>
+      </div>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6">用户管理</h2>
+      <!-- 状态切换演示 -->
+      <div class="mb-4 flex items-center gap-2">
+        <span class="text-sm text-gray-600">切换列表状态：</span>
+        <button class="px-3 py-1 text-sm border rounded hover:bg-gray-50 state-btn active" data-state="success">正常</button>
+        <button class="px-3 py-1 text-sm border rounded hover:bg-gray-50 state-btn" data-state="loading">加载中</button>
+        <button class="px-3 py-1 text-sm border rounded hover:bg-gray-50 state-btn" data-state="empty">空数据</button>
+        <button class="px-3 py-1 text-sm border rounded hover:bg-gray-50 state-btn" data-state="error">加载失败</button>
+      </div>
+      <!-- 指标卡 -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white p-5 rounded-lg shadow-sm border">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">总用户数</p>
+              <p class="text-2xl font-bold text-gray-800 mt-1">1,286</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="mt-2 text-green-500 text-xs flex items-center">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5 12l5 5L20 7"/></svg>
+            <span class="ml-1">12.5% 较上月</span>
+          </div>
+        </div>
+        <div class="bg-white p-5 rounded-lg shadow-sm border">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">今日新增</p>
+              <p class="text-2xl font-bold text-gray-800 mt-1">24</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </div>
+          <div class="mt-2 text-green-500 text-xs flex items-center">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5 12l5 5L20 7"/></svg>
+            <span class="ml-1">8.2% 较昨日</span>
+          </div>
+        </div>
+        <div class="bg-white p-5 rounded-lg shadow-sm border">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">启用用户</p>
+              <p class="text-2xl font-bold text-gray-800 mt-1">1,189</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </div>
+          <div class="mt-2 text-gray-500 text-xs">
+            <span>92.5% 激活率</span>
+          </div>
+        </div>
+        <div class="bg-white p-5 rounded-lg shadow-sm border">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">禁用用户</p>
+              <p class="text-2xl font-bold text-gray-800 mt-1">97</p>
+            </div>
+            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </div>
+          <div class="mt-2 text-red-500 text-xs flex items-center">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5 7l5 5 10-10"/></svg>
+            <span class="ml-1">2.1% 较上月</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 筛选区 -->
+      <div class="bg-white p-4 rounded-lg shadow-sm border mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">用户名/ID</label>
+            <input type="text" id="filterKeyword" placeholder="请输入关键词" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">部门</label>
+            <select id="filterDepartment" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">全部部门</option>
+              <option value="技术部">技术部</option>
+              <option value="产品部">产品部</option>
+              <option value="设计部">设计部</option>
+              <option value="运营部">运营部</option>
+              <option value="市场部">市场部</option>
+              <option value="人事部">人事部</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
+            <select id="filterStatus" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">全部状态</option>
+              <option value="1">启用</option>
+              <option value="0">禁用</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">创建时间</label>
+            <div class="flex gap-2">
+              <input type="date" id="filterDateStart" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="date" id="filterDateEnd" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 mt-4 justify-end">
+          <button id="btnReset" class="px-4 py-2 border rounded-md hover:bg-gray-50">重置</button>
+          <button id="btnSearch" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">搜索</button>
+        </div>
+      </div>
+
+      <!-- 列表工具栏 -->
+      <div class="bg-white p-4 rounded-lg shadow-sm border mb-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <button id="btnBatchDelete" disabled class="px-3 py-1.5 text-sm border border-red-300 text-red-600 rounded hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed">批量删除</button>
+          <button id="btnBatchEnable" disabled class="px-3 py-1.5 text-sm border border-green-300 text-green-600 rounded hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed">批量启用</button>
+          <button id="btnBatchDisable" disabled class="px-3 py-1.5 text-sm border border-yellow-300 text-yellow-600 rounded hover:bg-yellow-50 disabled:opacity-50 disabled:cursor-not-allowed">批量禁用</button>
+        </div>
+        <button id="btnAddUser" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          新增用户
+        </button>
+      </div>
+
+      <!-- 数据表格 -->
+      <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+        <table class="w-full" id="dataTable">
+          <thead class="bg-gray-50 border-b">
+            <tr>
+              <th class="px-4 py-3 text-left">
+                <input type="checkbox" id="selectAll" class="rounded border-gray-300">
+              </th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">ID</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">用户信息</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">部门</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">邮箱</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">状态</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">创建时间</th>
+              <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">操作</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- JS 动态渲染 -->
+          </tbody>
+        </table>
+        <!-- Loading 状态 -->
+        <div id="loadingState" class="hidden py-16 text-center">
+          <div class="inline-block w-8 h-8 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+          <p class="text-gray-500">加载中...</p>
+        </div>
+
+        <!-- 空数据状态 -->
+        <div id="emptyState" class="hidden py-16 text-center">
+          <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          <p class="text-gray-500">暂无数据</p>
+        </div>
+
+        <!-- 错误状态 -->
+        <div id="errorState" class="hidden py-16 text-center">
+          <svg class="w-16 h-16 mx-auto text-red-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="text-gray-500">加载失败，请重试</p>
+          <button class="mt-4 px-4 py-2 border rounded-md hover:bg-gray-50" onclick="window.app.retryLoad()">重试</button>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="mt-4 flex items-center justify-between">
+        <div class="text-sm text-gray-600">
+          共 <span id="totalCount">0</span> 条数据，显示第 <span id="currentPageRange">0-0</span> 条
+        </div>
+        <div class="flex items-center gap-1" id="pagination">
+          <!-- JS 动态渲染 -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 新增/编辑表单弹窗 -->
+  <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div id="modal" class="bg-white rounded-lg w-full max-w-lg max-h-[90vh] overflow-auto">
+      <div class="p-4 border-b flex items-center justify-between">
+        <h3 id="modalTitle" class="text-lg font-semibold">新增用户</h3>
+        <button id="closeModal" class="p-1 rounded hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <form id="userForm" class="p-4">
+        <input type="hidden" id="formId">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">用户名 <span class="text-red-500">*</span></label>
+          <input type="text" id="formUsername" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">邮箱 <span class="text-red-500">*</span></label>
+          <input type="email" id="formEmail" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">手机号</label>
+          <input type="tel" id="formPhone" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">部门 <span class="text-red-500">*</span></label>
+          <select id="formDepartment" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">请选择部门</option>
+            <option value="技术部">技术部</option>
+            <option value="产品部">产品部</option>
+            <option value="设计部">设计部</option>
+            <option value="运营部">运营部</option>
+            <option value="市场部">市场部</option>
+            <option value="人事部">人事部</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2">
+              <input type="radio" name="formStatus" value="1" checked class="border-gray-300">
+              <span>启用</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" name="formStatus" value="0" class="border-gray-300">
+              <span>禁用</span>
+            </label>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">备注</label>
+          <textarea id="formRemark" rows="3" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="请输入备注"></textarea>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-4 border-t">
+          <button type="button" id="cancelModal" class="px-4 py-2 border rounded-md hover:bg-gray-50">取消</button>
+          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 删除确认弹窗 -->
+  <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg w-full max-w-sm p-6">
+      <h3 class="text-lg font-semibold mb-2">确认删除</h3>
+      <p class="text-gray-600 mb-6">确定要删除该用户吗？此操作不可恢复。</p>
+      <div class="flex items-center justify-end gap-3">
+        <button id="cancelDelete" class="px-4 py-2 border rounded-md hover:bg-gray-50">取消</button>
+        <button id="confirmDelete" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">删除</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 消息 -->
+  <div id="toast" class="fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-y-[-100px] opacity-0">
+    <span id="toastMessage"></span>
+  </div>
+
+  <script type="module">
+    // Mock 数据生成
+    const departments = ['技术部', '产品部', '设计部', '运营部', '市场部', '人事部'];
+    const firstNames = ['张', '李', '王', '赵', '陈', '刘', '杨', '黄', '周', '吴', '徐', '孙', '马', '胡', '朱'];
+    const lastNames = ['伟', '芳', '娜', '敏', '静', '强', '磊', '军', '洋', '艳', '勇', '杰', '娟', '涛', '明'];
+
+    // 生成随机用户数据
+    function generateMockData(count = 20) {
+      const users = [];
+      const now = Date.now();
+      for (let i = 1; i <= count; i++) {
+        const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+        const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+        const department = departments[Math.floor(Math.random() * departments.length)];
+        const createdDate = new Date(now - Math.random() * 365 * 24 * 60 * 60 * 1000);
+        users.push({
+          id: i,
+          username: firstName + lastName,
+          email: `${firstName.toLowerCase()}${lastName.toLowerCase()}@example.com`,
+          phone: '1' + Math.floor(Math.random() * 10) + Array.from({length: 9}, () => Math.floor(Math.random() * 10)).join(''),
+          department,
+          status: Math.random() > 0.15 ? 1 : 0,
+          remark: '',
+          createTime: createdDate.toISOString().split('T')[0]
+        });
+      }
+      return users;
+    }
+
+    // 应用状态管理
+    const state = {
+      allUsers: generateMockData(20),
+      filteredUsers: [],
+      currentPage: 1,
+      pageSize: 10,
+      listState: 'success',
+      selectedIds: new Set(),
+      filters: {
+        keyword: '',
+        department: '',
+        status: '',
+        dateStart: '',
+        dateEnd: ''
+      },
+      editingUserId: null,
+      deletingUserId: null
+    };
+
+    // 工具函数：HTML 转义防止 XSS
+    function escapeHtml(str) {
+      if (!str) return str;
+      const htmlEntities = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      };
+      return String(str).replace(/[&<>"']/g, char => htmlEntities[char]);
+    }
+
+    // 筛选数据
+    function applyFilters() {
+      let filtered = [...state.allUsers];
+
+      if (state.filters.keyword) {
+        const kw = state.filters.keyword.toLowerCase();
+        filtered = filtered.filter(u =>
+          u.username.toLowerCase().includes(kw) ||
+          u.email.toLowerCase().includes(kw) ||
+          String(u.id).includes(kw)
+        );
+      }
+
+      if (state.filters.department) {
+        filtered = filtered.filter(u => u.department === state.filters.department);
+      }
+
+      if (state.filters.status !== '') {
+        filtered = filtered.filter(u => u.status === parseInt(state.filters.status));
+      }
+
+      if (state.filters.dateStart) {
+        filtered = filtered.filter(u => u.createTime >= state.filters.dateStart);
+      }
+
+      if (state.filters.dateEnd) {
+        filtered = filtered.filter(u => u.createTime <= state.filters.dateEnd);
+      }
+
+      state.filteredUsers = filtered;
+      state.currentPage = 1;
+      render();
+    }
+
+    // 获取当前页数据
+    function getCurrentPageData() {
+      const start = (state.currentPage - 1) * state.pageSize;
+      const end = start + state.pageSize;
+      return state.filteredUsers.slice(start, end);
+    }
+
+    // 获取总页数
+    function getTotalPages() {
+      return Math.ceil(state.filteredUsers.length / state.pageSize) || 1;
+    }
+
+    // 渲染表格主体
+    function renderTableBody() {
+      const tbody = document.getElementById('tableBody');
+      const loading = document.getElementById('loadingState');
+      const empty = document.getElementById('emptyState');
+      const error = document.getElementById('errorState');
+      const table = document.getElementById('dataTable');
+
+      // 隐藏所有状态
+      [loading, empty, error].forEach(el => el.classList.add('hidden'));
+      table.querySelector('tbody').classList.remove('hidden');
+
+      switch (state.listState) {
+        case 'loading':
+          table.querySelector('tbody').classList.add('hidden');
+          loading.classList.remove('hidden');
+          break;
+        case 'empty':
+          table.querySelector('tbody').classList.add('hidden');
+          empty.classList.remove('hidden');
+          break;
+        case 'error':
+          table.querySelector('tbody').classList.add('hidden');
+          error.classList.remove('hidden');
+          break;
+        case 'success':
+          const data = getCurrentPageData();
+          if (data.length === 0) {
+            table.querySelector('tbody').classList.add('hidden');
+            empty.classList.remove('hidden');
+          } else {
+            tbody.innerHTML = data.map(user => {
+              const statusClass = user.status === 1 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
+              const statusText = user.status === 1 ? '启用' : '禁用';
+              return `
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3">
+                    <input type="checkbox" data-id="${user.id}" ${state.selectedIds.has(user.id) ? 'checked' : ''} class="user-checkbox rounded border-gray-300">
+                  </td>
+                  <td class="px-4 py-3 text-sm text-gray-900">${user.id}</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <img src="https://placehold.co/40x40/3b82f6/ffffff?text=${escapeHtml(user.username[0])}" class="w-10 h-10 rounded-full" alt="">
+                      <span class="font-medium text-gray-900">${escapeHtml(user.username)}</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-sm text-gray-600">${escapeHtml(user.department)}</td>
+                  <td class="px-4 py-3 text-sm text-gray-600">${escapeHtml(user.email)}</td>
+                  <td class="px-4 py-3">
+                    <span class="px-2 py-1 rounded-full text-xs font-medium ${statusClass}">${statusText}</span>
+                  </td>
+                  <td class="px-4 py-3 text-sm text-gray-600">${user.createTime}</td>
+                  <td class="px-4 py-3 text-center">
+                    <button data-action="edit" data-id="${user.id}" class="px-2 py-1 text-blue-600 hover:bg-blue-50 rounded text-sm">编辑</button>
+                    ${user.status === 1 ?
+                      `<button data-action="disable" data-id="${user.id}" class="px-2 py-1 text-yellow-600 hover:bg-yellow-50 rounded text-sm ml-1">禁用</button>` :
+                      `<button data-action="enable" data-id="${user.id}" class="px-2 py-1 text-green-600 hover:bg-green-50 rounded text-sm ml-1">启用</button>`
+                    }
+                    <button data-action="delete" data-id="${user.id}" class="px-2 py-1 text-red-600 hover:bg-red-50 rounded text-sm ml-1">删除</button>
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          }
+          break;
+      }
+    }
+
+    // 渲染分页
+    function renderPagination() {
+      const pagination = document.getElementById('pagination');
+      const totalCount = document.getElementById('totalCount');
+      const currentPageRange = document.getElementById('currentPageRange');
+
+      totalCount.textContent = state.filteredUsers.length;
+      const start = state.filteredUsers.length > 0 ? (state.currentPage - 1) * state.pageSize + 1 : 0;
+      const end = Math.min(state.currentPage * state.pageSize, state.filteredUsers.length);
+      currentPageRange.textContent = `${start}-${end}`;
+
+      const totalPages = getTotalPages();
+      if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+      }
+
+      let html = '';
+
+      // 上一页
+      html += `
+        <button class="px-3 py-1 border rounded ${state.currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'}" data-page="${state.currentPage - 1}" ${state.currentPage === 1 ? 'disabled' : ''}>上一页</button>
+      `;
+
+      // 页码
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= state.currentPage - 1 && i <= state.currentPage + 1)) {
+          html += `
+            <button class="px-3 py-1 border rounded ${i === state.currentPage ? 'bg-blue-600 text-white border-blue-600' : 'hover:bg-gray-50'}" data-page="${i}">${i}</button>
+          `;
+        } else if ((i === state.currentPage - 2) || (i === state.currentPage + 2)) {
+          html += `<span class="px-2 text-gray-400">...</span>`;
+        }
+      }
+
+      // 下一页
+      html += `
+        <button class="px-3 py-1 border rounded ${state.currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'}" data-page="${state.currentPage + 1}" ${state.currentPage === totalPages ? 'disabled' : ''}>下一页</button>
+      `;
+
+      pagination.innerHTML = html;
+    }
+
+    // 更新批量操作按钮状态
+    function updateBatchButtons() {
+      const hasSelection = state.selectedIds.size > 0;
+      document.getElementById('btnBatchDelete').disabled = !hasSelection;
+      document.getElementById('btnBatchEnable').disabled = !hasSelection;
+      document.getElementById('btnBatchDisable').disabled = !hasSelection;
+    }
+
+    // 全选框状态
+    function updateSelectAll() {
+      const currentData = getCurrentPageData();
+      const selectAll = document.getElementById('selectAll');
+      if (currentData.length === 0) {
+        selectAll.checked = false;
+        selectAll.indeterminate = false;
+        return;
+      }
+      const allChecked = currentData.every(u => state.selectedIds.has(u.id));
+      const someChecked = currentData.some(u => state.selectedIds.has(u.id));
+      selectAll.checked = allChecked;
+      selectAll.indeterminate = someChecked && !allChecked;
+    }
+
+    // 主渲染函数
+    function render() {
+      renderTableBody();
+      renderPagination();
+      updateBatchButtons();
+      updateSelectAll();
+    }
+
+    // Toast 消息
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const msgEl = document.getElementById('toastMessage');
+      msgEl.textContent = message;
+
+      const bgClass = type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-yellow-600';
+      toast.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-y-0 opacity-100 text-white ${bgClass}`;
+
+      setTimeout(() => {
+        toast.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-y-[-100px] opacity-0 ${bgClass} text-white`;
+      }, 3000);
+    }
+
+    // 弹窗控制
+    function openModal() {
+      const overlay = document.getElementById('modalOverlay');
+      overlay.classList.remove('hidden');
+      setTimeout(() => document.getElementById('formUsername').focus(), 100);
+    }
+
+    function closeModal() {
+      const overlay = document.getElementById('modalOverlay');
+      overlay.classList.add('hidden');
+      state.editingUserId = null;
+      document.getElementById('userForm').reset();
+    }
+
+    function openConfirmDeleteModal(userId) {
+      state.deletingUserId = userId;
+      document.getElementById('confirmModal').classList.remove('hidden');
+    }
+
+    function closeConfirmDeleteModal() {
+      document.getElementById('confirmModal').classList.add('hidden');
+      state.deletingUserId = null;
+    }
+
+    // 切换侧边栏
+    function initSidebarToggle() {
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      const logoText = document.querySelectorAll('.menu-text, #logoText');
+
+      const collapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+      if (collapsed) {
+        sidebar.classList.replace('w-64', 'w-16');
+        logoText.forEach(el => el.classList.add('hidden'));
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        const isCollapsed = sidebar.classList.contains('w-16');
+        if (isCollapsed) {
+          sidebar.classList.replace('w-16', 'w-64');
+          logoText.forEach(el => el.classList.remove('hidden'));
+          localStorage.setItem('sidebarCollapsed', 'false');
+        } else {
+          sidebar.classList.replace('w-64', 'w-16');
+          logoText.forEach(el => el.classList.add('hidden'));
+          localStorage.setItem('sidebarCollapsed', 'true');
+        }
+      });
+    }
+
+    // 用户菜单下拉
+    function initUserMenu() {
+      const dropdown = document.getElementById('userDropdown');
+      const toggle = document.getElementById('userMenuToggle');
+
+      function closeMenu(event) {
+        if (!document.getElementById('userMenu').contains(event.target)) {
+          dropdown.classList.add('hidden');
+        }
+      }
+
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('hidden');
+        const icon = toggle.querySelector('svg:last-child');
+        if (dropdown.classList.contains('hidden')) {
+          icon.style.transform = 'rotate(0deg)';
+        } else {
+          icon.style.transform = 'rotate(180deg)';
+        }
+      });
+
+      document.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !dropdown.classList.contains('hidden')) {
+          dropdown.classList.add('hidden');
+          const icon = toggle.querySelector('svg:last-child');
+          icon.style.transform = 'rotate(0deg)';
+        }
+      });
+    }
+
+    // 全选/取消全选
+    function initSelectAll() {
+      document.getElementById('selectAll').addEventListener('change', (e) => {
+        const currentData = getCurrentPageData();
+        if (e.target.checked) {
+          currentData.forEach(user => state.selectedIds.add(user.id));
+        } else {
+          currentData.forEach(user => state.selectedIds.delete(user.id));
+        }
+        updateBatchButtons();
+        renderTableBody();
+      });
+    }
+
+    // 表格行 checkbox 变化
+    function initCheckboxDelegation() {
+      document.getElementById('tableBody').addEventListener('change', (e) => {
+        if (e.target.matches('.user-checkbox')) {
+          const id = parseInt(e.target.dataset.id);
+          if (e.target.checked) {
+            state.selectedIds.add(id);
+          } else {
+            state.selectedIds.delete(id);
+          }
+          updateBatchButtons();
+          updateSelectAll();
+        }
+      });
+    }
+
+    // 操作按钮事件委托
+    function initActionDelegation() {
+      document.getElementById('tableBody').addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+
+        const action = btn.dataset.action;
+        const id = parseInt(btn.dataset.id);
+        const user = state.allUsers.find(u => u.id === id);
+
+        switch (action) {
+          case 'edit':
+            state.editingUserId = id;
+            document.getElementById('modalTitle').textContent = '编辑用户';
+            document.getElementById('formId').value = id;
+            document.getElementById('formUsername').value = user.username;
+            document.getElementById('formEmail').value = user.email;
+            document.getElementById('formPhone').value = user.phone || '';
+            document.getElementById('formDepartment').value = user.department;
+            document.querySelector(`input[name="formStatus"][value="${user.status}"]`).checked = true;
+            document.getElementById('formRemark').value = user.remark || '';
+            openModal();
+            break;
+          case 'delete':
+            openConfirmDeleteModal(id);
+            break;
+          case 'enable':
+            user.status = 1;
+            showToast('已启用该用户');
+            applyFilters();
+            break;
+          case 'disable':
+            user.status = 0;
+            showToast('已禁用该用户');
+            applyFilters();
+            break;
+        }
+      });
+    }
+
+    // 分页点击
+    function initPaginationDelegation() {
+      document.getElementById('pagination').addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-page]');
+        if (!btn || btn.disabled) return;
+        state.currentPage = parseInt(btn.dataset.page);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        render();
+      });
+    }
+
+    // 筛选搜索
+    function initSearch() {
+      document.getElementById('btnSearch').addEventListener('click', () => {
+        state.filters.keyword = document.getElementById('filterKeyword').value.trim();
+        state.filters.department = document.getElementById('filterDepartment').value;
+        state.filters.status = document.getElementById('filterStatus').value;
+        state.filters.dateStart = document.getElementById('filterDateStart').value;
+        state.filters.dateEnd = document.getElementById('filterDateEnd').value;
+        state.selectedIds.clear();
+        applyFilters();
+      });
+
+      document.getElementById('btnReset').addEventListener('click', () => {
+        document.getElementById('filterKeyword').value = '';
+        document.getElementById('filterDepartment').value = '';
+        document.getElementById('filterStatus').value = '';
+        document.getElementById('filterDateStart').value = '';
+        document.getElementById('filterDateEnd').value = '';
+        for (const k in state.filters) {
+          state.filters[k] = '';
+        }
+        state.selectedIds.clear();
+        applyFilters();
+      });
+    }
+
+    // 新增用户按钮
+    function initAddUser() {
+      document.getElementById('btnAddUser').addEventListener('click', () => {
+        state.editingUserId = null;
+        document.getElementById('modalTitle').textContent = '新增用户';
+        document.getElementById('userForm').reset();
+        openModal();
+      });
+    }
+
+    // 表单提交
+    function initFormSubmit() {
+      document.getElementById('userForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('formUsername').value.trim();
+        const email = document.getElementById('formEmail').value.trim();
+        const phone = document.getElementById('formPhone').value.trim();
+        const department = document.getElementById('formDepartment').value;
+        const status = parseInt(document.querySelector('input[name="formStatus"]:checked').value);
+        const remark = document.getElementById('formRemark').value.trim();
+
+        if (!username || !email || !department) {
+          showToast('请填写必填项', 'error');
+          return;
+        }
+
+        if (state.editingUserId) {
+          const user = state.allUsers.find(u => u.id === state.editingUserId);
+          user.username = username;
+          user.email = email;
+          user.phone = phone;
+          user.department = department;
+          user.status = status;
+          user.remark = remark;
+          showToast('修改成功');
+        } else {
+          const newId = Math.max(0, ...state.allUsers.map(u => u.id)) + 1;
+          const now = new Date();
+          state.allUsers.unshift({
+            id: newId,
+            username,
+            email,
+            phone,
+            department,
+            status,
+            remark,
+            createTime: now.toISOString().split('T')[0]
+          });
+          showToast('新增成功');
+        }
+
+        closeModal();
+        state.selectedIds.clear();
+        applyFilters();
+      });
+
+      [document.getElementById('closeModal'), document.getElementById('cancelModal')].forEach(btn => {
+        btn.addEventListener('click', closeModal);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !document.getElementById('modalOverlay').classList.contains('hidden')) {
+          closeModal();
+          closeConfirmDeleteModal();
+        }
+      });
+
+      document.getElementById('modalOverlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('modalOverlay')) {
+          closeModal();
+        }
+      });
+    }
+
+    // 删除确认
+    function initDeleteConfirm() {
+      document.getElementById('confirmDelete').addEventListener('click', () => {
+        if (state.deletingUserId) {
+          state.allUsers = state.allUsers.filter(u => u.id !== state.deletingUserId);
+          state.selectedIds.delete(state.deletingUserId);
+          showToast('删除成功');
+          closeConfirmDeleteModal();
+          applyFilters();
+        }
+      });
+
+      document.getElementById('cancelDelete').addEventListener('click', closeConfirmDeleteModal);
+
+      document.getElementById('confirmModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('confirmModal')) {
+          closeConfirmDeleteModal();
+        }
+      });
+    }
+
+    // 批量操作
+    function initBatchActions() {
+      document.getElementById('btnBatchDelete').addEventListener('click', () => {
+        if (state.selectedIds.size === 0) return;
+        if (confirm(`确定要删除选中的 ${state.selectedIds.size} 个用户吗？此操作不可恢复。`)) {
+          state.allUsers = state.allUsers.filter(u => !state.selectedIds.has(u.id));
+          const count = state.selectedIds.size;
+          state.selectedIds.clear();
+          showToast(`已删除 ${count} 个用户`);
+          applyFilters();
+        }
+      });
+
+      document.getElementById('btnBatchEnable').addEventListener('click', () => {
+        if (state.selectedIds.size === 0) return;
+        state.allUsers.forEach(u => {
+          if (state.selectedIds.has(u.id)) u.status = 1;
+        });
+        const count = state.selectedIds.size;
+        state.selectedIds.clear();
+        showToast(`已批量启用 ${count} 个用户`);
+        applyFilters();
+      });
+
+      document.getElementById('btnBatchDisable').addEventListener('click', () => {
+        if (state.selectedIds.size === 0) return;
+        state.allUsers.forEach(u => {
+          if (state.selectedIds.has(u.id)) u.status = 0;
+        });
+        const count = state.selectedIds.size;
+        state.selectedIds.clear();
+        showToast(`已批量禁用 ${count} 个用户`);
+        applyFilters();
+      });
+    }
+
+    // 状态切换演示
+    function initStateToggle() {
+      document.querySelectorAll('.state-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('active', 'bg-blue-50', 'border-blue-300', 'text-blue-600'));
+          btn.classList.add('active', 'bg-blue-50', 'border-blue-300', 'text-blue-600');
+          state.listState = btn.dataset.state;
+          render();
+        });
+      });
+    }
+
+    // 重试加载
+    window.app = {
+      retryLoad() {
+        state.listState = 'success';
+        applyFilters();
+      }
+    };
+
+    // 初始化
+    function init() {
+      state.filteredUsers = [...state.allUsers];
+
+      initSidebarToggle();
+      initUserMenu();
+      initSelectAll();
+      initCheckboxDelegation();
+      initActionDelegation();
+      initPaginationDelegation();
+      initSearch();
+      initAddUser();
+      initFormSubmit();
+      initDeleteConfirm();
+      initBatchActions();
+      initStateToggle();
+
+      render();
+    }
+
+    init();
+  </script>
+</body>
+</html>

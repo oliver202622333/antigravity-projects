@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常见问题 - 掘金下单</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f7f8fa;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航 */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+            color: #3b82f6;
+            margin-right: 48px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #3b82f6;
+        }
+
+        /* 主体内容 */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            display: flex;
+            gap: 40px;
+        }
+
+        /* 侧边栏目录 */
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 104px;
+            align-self: flex-start;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+            padding-left: 12px;
+        }
+
+        .sidebar-nav {
+            background: #fff;
+            border-radius: 8px;
+            padding: 8px 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 10px 16px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav a:hover {
+            background: #f9fafb;
+            color: #3b82f6;
+        }
+
+        .sidebar-nav a.active {
+            background: #eff6ff;
+            color: #3b82f6;
+            border-left-color: #3b82f6;
+        }
+
+        /* 内容区域 */
+        .content {
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            padding: 40px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .page-desc {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        /* FAQ 项目 */
+        .faq-section {
+            margin-bottom: 32px;
+        }
+
+        .faq-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .faq-item {
+            margin-bottom: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 16px 20px;
+            background: #f9fafb;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 15px;
+            font-weight: 500;
+            color: #1f2937;
+            transition: background 0.2s;
+        }
+
+        .faq-question:hover {
+            background: #f3f4f6;
+        }
+
+        .faq-arrow {
+            width: 16px;
+            height: 16px;
+            color: #9ca3af;
+            transition: transform 0.2s;
+        }
+
+        .faq-item.active .faq-arrow {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 16px 20px;
+            max-height: 1000px;
+        }
+
+        .faq-answer p {
+            margin-bottom: 12px;
+        }
+
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-answer code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 13px;
+            color: #dc2626;
+        }
+
+        .faq-answer ul,
+        .faq-answer ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        .faq-answer li {
+            margin-bottom: 8px;
+        }
+
+        .faq-answer .tip {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 16px 0;
+        }
+
+        .faq-answer .tip-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 4px;
+        }
+
+        .faq-answer .tip-content {
+            color: #78350f;
+            font-size: 13px;
+        }
+
+        /* 代码块 */
+        .faq-answer pre {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .faq-answer pre code {
+            background: transparent;
+            color: #e5e7eb;
+            padding: 0;
+        }
+
+        /* 表格 */
+        .faq-answer table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .faq-answer th,
+        .faq-answer td {
+            border: 1px solid #e5e7eb;
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .faq-answer th {
+            background: #f9fafb;
+            font-weight: 600;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px 24px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .main {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">MyQuant</div>
+            <nav class="nav-links">
+                <a href="#">文档中心</a>
+                <a href="#" class="active">常见问题</a>
+                <a href="#">API 参考</a>
+                <a href="#">更新日志</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主体 -->
+    <main class="main">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-title">FAQ 分类</div>
+            <nav class="sidebar-nav">
+                <a href="#order" class="active">掘金下单</a>
+                <a href="#account">账户相关</a>
+                <a href="#data">数据问题</a>
+                <a href="#strategy">策略开发</a>
+                <a href="#risk">风控管理</a>
+            </nav>
+        </aside>
+
+        <!-- 内容区 -->
+        <section class="content">
+            <h1 class="page-title">常见问题</h1>
+            <p class="page-desc">以下是关于掘金下单的常见问题解答，如未找到答案，请联系技术支持。</p>
+
+            <!-- 掘金下单分类 -->
+            <div class="faq-section" id="order">
+                <h2 class="faq-section-title">掘金下单</h2>
+
+                <div class="faq-item active">
+                    <div class="faq-question">
+                        <span>1. 如何开通掘金下单功能？</span>
+                        <svg class="faq-arrow" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>开通掘金下单功能需要以下步骤：</p>
+                        <ol>
+                            <li>完成账户实名认证</li>
+                            <li>签署相关风险揭示书</li>
+                            <li>完成适当性评估</li>
+                            <li>联系客户经理或在线申请开通</li>
+                        </ol>
+                        <div class="tip">
+                            <div class="tip-title">提示</div>
+                            <div class="tip-content">开通后需要在客户端重启才能生效。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>2. 支持哪些交易品种？</span>
+                        <svg class="faq-arrow" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>目前掘金下单支持以下交易品种：</p>
+                        <ul>
+                            <li>A股（主板、创业板、科创板）</li>
+                            <li>场内基金（ETF、LOF）</li>
+                            <li>可转债</li>
+                            <li>国债逆回购</li>
+                        </ul>
+                        <p>港股通和期货品种正在开发中，敬请期待。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>3. 下单有什么限制？</span>
+                        <svg class="faq-arrow" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>下单限制如下：</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>品种</th>
+                                    <th>单笔最小</th>
+                                    <th>单笔最大</th>
+                                    <th>备注</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A股</td>
+                                    <td>100股</td>
+                                    <td>100万股</td>
+                                    <td>100股整数倍</td>
+                                </tr>
+                                <tr>
+                                    <td>基金</td>
+                                    <td>100份</td>
+                                    <td>100万份</td>
+                                    <td>100份整数倍</td>
+                                </tr>
+                                <tr>
+                                    <td>可转债</td>
+                                    <td>10张</td>
+                                    <td>10万张</td>
+                                    <td>10张整数倍</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>4. 如何使用 API 下单？</span>
+                        <svg class="faq-arrow" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>使用 API 下单的基本示例：</p>
+                        <pre><code># Python 示例
+from gm.api import *
+
+# 初始化
+set_token("your_token_here")
+
+# 下单
+order_volume(
+    symbol='SHSE.600000',
+    volume=100,
+    side=OrderSide_Buy,
+    order_type=OrderType_Limit,
+    price=10.50
+)</code></pre>
+                        <p>详细 API 文档请参考 <a href="#" style="color: #3b82f6;">API 参考</a>。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>5. 订单状态有哪些？</span>
+                        <svg class="faq-arrow" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>订单状态说明：</p>
+                        <ul>
+                            <li><code>已报</code> - 订单已提交，等待撮合</li>
+                            <li><code>部成</code> - 部分成交</li>
+                            <li><code>已成</code> - 全部成交</li>
+                            <li><code>部撤</code> - 部分成交后撤单</li>
+                            <li><code>已撤</code> - 已撤单</li>
+                            <li><code>废单</code> - 订单无效</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>6. 交易时间是什么时候？</span>
+                        <svg class="faq-arrow" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>A股交易时间：</p>
+                        <ul>
+                            <li><strong>上午</strong>：9:30 - 11:30</li>
+                            <li><strong>下午</strong>：13:00 - 15:00</li>
+                            <li><strong>集合竞价</strong>：9:15 - 9:25</li>
+                            <li><strong>创业板/科创板盘后定价</strong>：15:05 - 15:30</li>
+                        </ul>
+                        <p>国债逆回购交易时间延长至 15:30。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>7. 如何撤销订单？</span>
+                        <svg class="faq-arrow" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>撤单操作示例：</p>
+                        <pre><code># 撤销指定订单
+cancel_order(cl_ord_id='your_order_id')
+
+# 撤销账户所有未成交订单
+cancel_all_account_orders(account_id='your_account_id')</code></pre>
+                        <div class="tip">
+                            <div class="tip-title">注意</div>
+                            <div class="tip-content">已成订单无法撤销，部分成交订单只能撤销未成交部分。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>8. 手续费怎么计算？</span>
+                        <svg class="faq-arrow" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>A股交易费用包括：</p>
+                        <ul>
+                            <li><strong>佣金</strong>：不超过成交金额的 0.3%，起点 5 元</li>
+                            <li><strong>印花税</strong>：成交金额的 0.1%（仅卖出收取）</li>
+                            <li><strong>过户费</strong>：成交金额的 0.001%（仅沪市收取）</li>
+                            <li><strong>经手费、证管费</strong>：包含在佣金中</li>
+                        </ul>
+                        <p>具体费率以账户签约为准。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>© 2024 MyQuant. 保留所有权利。</p>
+    </footer>
+
+    <script>
+        // FAQ 折叠展开交互
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+
+                // 关闭其他所有
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+
+                // 如果原来不是展开状态，则展开当前项
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // 侧边栏导航
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-nav a').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

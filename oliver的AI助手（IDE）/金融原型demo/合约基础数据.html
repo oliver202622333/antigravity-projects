@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>板智管家系统52.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+            background: #2b2b2b;
+            color: #e0e0e0;
+            font-size: 12px;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* 顶部菜单栏 */
+        .menu-bar {
+            background: #3c3f41;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .menu-item {
+            padding: 2px 12px;
+            cursor: pointer;
+            color: #e0e0e0;
+        }
+
+        .menu-item:hover {
+            background: #4a4a4a;
+        }
+
+        /* 顶部工具栏 */
+        .tool-bar {
+            background: #3c3f41;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            border-bottom: 1px solid #1a1a1a;
+            gap: 4px;
+        }
+
+        .tool-btn {
+            width: 36px;
+            height: 36px;
+            background: #3c3f41;
+            border: 1px solid #555;
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #e0e0e0;
+            font-size: 10px;
+        }
+
+        .tool-btn:hover {
+            background: #4a4a4a;
+        }
+
+        .tool-btn .icon {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .separator {
+            width: 1px;
+            height: 32px;
+            background: #555;
+            margin: 0 8px;
+        }
+
+        /* 右上角用户区 */
+        .user-area {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-btn {
+            background: #e6a23c;
+            color: #1a1a1a;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .win-btn {
+            width: 28px;
+            height: 24px;
+            background: #555;
+            border: none;
+            color: #e0e0e0;
+            cursor: pointer;
+        }
+
+        /* 主内容区 */
+        .main-area {
+            display: flex;
+            height: calc(100vh - 72px);
+        }
+
+        /* 左侧面板 */
+        .left-panel {
+            width: 320px;
+            background: #2b2b2b;
+            border-right: 1px solid #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 左侧标签栏 */
+        .left-tabs {
+            display: flex;
+            background: #3c3f41;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .left-tab {
+            padding: 6px 16px;
+            cursor: pointer;
+            color: #e0e0e0;
+            font-size: 12px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .left-tab.active {
+            background: #2b2b2b;
+            border-bottom-color: #4a90e2;
+        }
+
+        /* 左侧工具栏 */
+        .left-toolbar {
+            display: flex;
+            padding: 4px 8px;
+            background: #3c3f41;
+            border-bottom: 1px solid #1a1a1a;
+            gap: 4px;
+        }
+
+        .left-tool-btn {
+            padding: 2px 8px;
+            background: #3c3f41;
+            border: 1px solid #555;
+            color: #e0e0e0;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        /* 树形视图 */
+        .tree-view {
+            flex: 1;
+            overflow: auto;
+            padding: 8px;
+        }
+
+        .tree-item {
+            display: flex;
+            align-items: center;
+            padding: 4px 8px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .tree-item:hover {
+            background: #3c3f41;
+        }
+
+        .tree-item.selected {
+            background: #4a90e2;
+        }
+
+        .tree-item .icon {
+            margin-right: 6px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .tree-item .num {
+            color: #888;
+            margin-right: 8px;
+            width: 24px;
+        }
+
+        .tree-item.folder > .icon {
+            color: #e6a23c;
+        }
+
+        .tree-item.table > .icon {
+            color: #9b59b6;
+        }
+
+        .tree-children {
+            margin-left: 20px;
+        }
+
+        /* 中间/右侧面板 */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 搜索栏 */
+        .search-bar {
+            background: #3c3f41;
+            padding: 6px 12px;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-input {
+            background: #2b2b2b;
+            border: 1px solid #555;
+            color: #e0e0e0;
+            padding: 4px 8px;
+            border-radius: 3px;
+            width: 200px;
+            font-size: 12px;
+        }
+
+        /* 标签页 */
+        .content-tabs {
+            display: flex;
+            background: #3c3f41;
+            padding: 0 8px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .content-tab {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: #2b2b2b;
+            cursor: pointer;
+            border-top: 2px solid #4a90e2;
+            margin-right: 4px;
+            font-size: 12px;
+        }
+
+        .content-tab .close {
+            margin-left: 8px;
+            color: #888;
+            cursor: pointer;
+        }
+
+        /* 视图切换栏 */
+        .view-bar {
+            background: #3c3f41;
+            padding: 4px 12px;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+        }
+
+        .view-tab {
+            padding: 4px 12px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .view-tab.active {
+            color: #7ed321;
+        }
+
+        /* 表格容器 */
+        .table-container {
+            flex: 1;
+            overflow: auto;
+            background: #1e1e1e;
+        }
+
+        /* 数据表格 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #3c3f41;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: #2b2b2b;
+            color: #4a90e2;
+            font-weight: normal;
+        }
+
+        .data-table td {
+            background: #1e1e1e;
+        }
+
+        .data-table tr:nth-child(even) td {
+            background: #252526;
+        }
+
+        /* 底部日志区 */
+        .log-panel {
+            height: 180px;
+            background: #1e1e1e;
+            border-top: 1px solid #3c3f41;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .log-header {
+            background: #3c3f41;
+            padding: 4px 12px;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .log-tabs {
+            display: flex;
+        }
+
+        .log-tab {
+            padding: 2px 12px;
+            cursor: pointer;
+            color: #e0e0e0;
+        }
+
+        .log-content {
+            flex: 1;
+            overflow: auto;
+            padding: 8px 12px;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 11px;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .log-line .time {
+            color: #888;
+        }
+
+        .log-line .info {
+            color: #4a90e2;
+        }
+
+        .log-line .success {
+            color: #7ed321;
+        }
+
+        /* 状态栏 */
+        .status-bar {
+            background: #4a90e2;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 11px;
+            color: #fff;
+            justify-content: flex-end;
+            gap: 24px;
+        }
+
+        /* 图标样式 */
+        .icon-folder::before { content: "📁"; }
+        .icon-folder-open::before { content: "📂"; }
+        .icon-table::before { content: "📊"; }
+        .icon-file::before { content: "📄"; }
+        .icon-play::before { content: "▶"; }
+        .icon-save::before { content: "💾"; }
+        .icon-settings::before { content: "⚙"; }
+        .icon-refresh::before { content: "🔄"; }
+
+        .tree-item .arrow {
+            display: inline-block;
+            width: 12px;
+            text-align: center;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部菜单栏 -->
+    <div class="menu-bar">
+        <div class="menu-item">文件(F)</div>
+        <div class="menu-item">编辑(E)</div>
+        <div class="menu-item">视图(V)</div>
+        <div class="menu-item">工具(T)</div>
+        <div class="menu-item">帮助(H)</div>
+    </div>
+
+    <!-- 顶部工具栏 -->
+    <div class="tool-bar">
+        <button class="tool-btn">
+            <span class="icon">📂</span>
+            <span>策略文件</span>
+        </button>
+        <button class="tool-btn">
+            <span class="icon">📊</span>
+            <span>库表文件</span>
+        </button>
+        <div class="separator"></div>
+        <button class="tool-btn">
+            <span class="icon">📈</span>
+        </button>
+        <button class="tool-btn">
+            <span class="icon">⚙</span>
+        </button>
+        <button class="tool-btn">
+            <span class="icon">▶</span>
+        </button>
+        <div class="separator"></div>
+        <button class="tool-btn">
+            <span class="icon">💾</span>
+        </button>
+        <button class="tool-btn">
+            <span class="icon">📋</span>
+        </button>
+        <button class="tool-btn">
+            <span class="icon">🔄</span>
+        </button>
+        <button class="tool-btn">
+            <span class="icon">🔍</span>
+        </button>
+
+        <div class="user-area">
+            <button class="user-btn">账户: admin</button>
+            <div class="window-controls">
+                <button class="win-btn">—</button>
+                <button class="win-btn">□</button>
+                <button class="win-btn">×</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="main-area">
+        <!-- 左侧面板 -->
+        <div class="left-panel">
+            <div class="left-tabs">
+                <div class="left-tab active">策略文件树</div>
+            </div>
+            <div class="left-toolbar">
+                <button class="left-tool-btn">🌳 根编辑</button>
+                <button class="left-tool-btn">📊 表编辑</button>
+                <span style="margin-left: auto; color: #888;">∨</span>
+            </div>
+
+            <div class="tree-view">
+                <!-- 根节点 -->
+                <div class="tree-item">
+                    <span class="icon">📁</span>
+                    <span>根</span>
+                </div>
+
+                <div class="tree-children">
+                    <!-- 基础数据表 -->
+                    <div class="tree-item folder">
+                        <span class="num">1</span>
+                        <span class="icon">📁</span>
+                        <span>基础数据表</span>
+                    </div>
+                    <div class="tree-children">
+                        <div class="tree-item folder">
+                            <span class="num">2</span>
+                            <span class="icon">📁</span>
+                            <span>完整</span>
+                        </div>
+                        <div class="tree-item folder">
+                            <span class="num">3</span>
+                            <span class="icon">📁</span>
+                            <span>基本面</span>
+                        </div>
+                        <div class="tree-item folder">
+                            <span class="num">4</span>
+                            <span class="icon">📁</span>
+                            <span>技术面</span>
+                        </div>
+                        <div class="tree-item folder">
+                            <span class="num">5</span>
+                            <span class="icon">📁</span>
+                            <span>理论持仓</span>
+                        </div>
+                        <div class="tree-item folder">
+                            <span class="num">6</span>
+                            <span class="icon">📁</span>
+                            <span>实际持仓</span>
+                        </div>
+                        <div class="tree-item folder">
+                            <span class="num">7</span>
+                            <span class="icon">📁</span>
+                            <span>合约</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-item table">
+                                <span class="num">8</span>
+                                <span class="icon">📊</span>
+                                <span>合约连续交易时间.table</span>
+                            </div>
+                            <div class="tree-item table selected">
+                                <span class="num">12</span>
+                                <span class="icon">📊</span>
+                                <span>期货合约主力数据(日).table</span>
+                            </div>
+                            <div class="tree-item table">
+                                <span class="num">9</span>
+                                <span class="icon">📊</span>
+                                <span>合约基础数据.table</span>
+                            </div>
+                            <div class="tree-item table">
+                                <span class="num">10</span>
+                                <span class="icon">📊</span>
+                                <span>期货合约费率(最新).table</span>
+                            </div>
+                            <div class="tree-item table">
+                                <span class="num">11</span>
+                                <span class="icon">📊</span>
+                                <span>期货合约费率(日).table</span>
+                            </div>
+                            <div class="tree-item table">
+                                <span class="num">13</span>
+                                <span class="icon">📊</span>
+                                <span>股票复权因子(日).table</span>
+                            </div>
+                            <div class="tree-item table">
+                                <span class="num">14</span>
+                                <span class="icon">📊</span>
+                                <span>股票类静态数据(最新).table</span>
+                            </div>
+                            <div class="tree-item table">
+                                <span class="num">15</span>
+                                <span class="icon">📊</span>
+                                <span>股票类静态数据(日).table</span>
+                            </div>
+                            <div class="tree-item table">
+                                <span class="num">16</span>
+                                <span class="icon">📊</span>
+                                <span>期权静态数据(日).table</span>
+                            </div>
+                            <div class="tree-item table">
+                                <span class="num">17</span>
+                                <span class="icon">📊</span>
+                                <span>可转债静态数据(日).table</span>
+                            </div>
+                            <div class="tree-item table">
+                                <span class="num">18</span>
+                                <span class="icon">📊</span>
+                                <span>期货静态数据(日).table</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧面板 -->
+        <div class="right-panel">
+            <!-- 搜索栏 -->
+            <div class="search-bar">
+                <span>🔍</span>
+                <input type="text" class="search-input" placeholder="搜索">
+                <span style="color: #888; margin-left: 8px;">100%</span>
+            </div>
+
+            <!-- 标签页 -->
+            <div class="content-tabs">
+                <div class="content-tab">
+                    <span>📊 合约基础数据.table</span>
+                    <span class="close">×</span>
+                </div>
+            </div>
+
+            <!-- 视图切换栏 -->
+            <div class="view-bar">
+                <div class="view-tab active">开始</div>
+                <div class="view-tab">数据</div>
+                <div class="view-tab">视图</div>
+            </div>
+
+            <!-- 表格容器 -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                        <th>序号</th>
+                        <th>字段名称</th>
+                        <th>数据类型</th>
+                        <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>合约编码</td>
+                            <td>长整型</td>
+                            <td>
+                                合约名映射为合约编码组【合约编码,期权方向,行权价】<br>
+                                股票/期货/月均价期货=【XXXX.0.0】；<br>
+                                期权IO2511-C-3750=【IO2511对应编码,-C-对应编码,3750】<br>
+                                新编码模式，明确区分股票/期货/月均价期货
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>期权方向</td>
+                            <td>长整型</td>
+                            <td>- 非期权为0，期权为其方向字符的对应编码；如 "-C-" 对应：6257071095808；</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>行权价</td>
+                            <td>浮点型</td>
+                            <td>非期权：赋值为0；<br>期权：赋值为实际行权价；</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>合约池编号</td>
+                            <td>整型</td>
+                            <td>量化自定义指标，合约在合约池中的顺序编号，从0开始；<br>直接采存加载时，该字段=0；</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>合约类型</td>
+                            <td>整型</td>
+                            <td>量化自定义指标，期货(0)/股票(1)，该字段区分大类型；</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>合约类型细分</td>
+                            <td>整型</td>
+                            <td>
+                                量化自定义指标<br>
+                                1.期货类：期货(1)/期货期权(2)/组合(3)/即期(4)/期转现(5)/现货期权(6)/TAS合约(7)/金属指数(10)；<br>
+                                2.股票类：个股(101)/指数(102)/ETF(103)/可转债(104)；<br>
+                                3.注：股指期权为现货期权6，商品期权为期货期权2，无法识别赋值为0；
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>合约交易所</td>
+                            <td>整型</td>
+                            <td>
+                                期货类：大商所DCE(3)/郑商所CZCE(4)/上期所SHFE(5)/中金所CFFEX(6)/广期所GFEX(7)；<br>
+                                股票类：上交所SSE(1)/深交所SZSE(2)/北交所BSE(10)；
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>合约乘数</td>
+                            <td>整型</td>
+                            <td>
+                                1.期货类：赋值该合约的合约乘数；<br>
+                                （1）9999/9995/8888/8885取对应映射合约数据；<br>
+                                2.股票类：直接赋值为1
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>最小跳动</td>
+                            <td>浮点型</td>
+                            <td>
+                                1.期货类：赋值该合约的最小跳动；<br>
+                                （1）9999/9995/8888/8885取对应映射合约数据；<br>
+                                2.股票类：赋值该合约的最小变动价位；
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>所属板块</td>
+                            <td>整型</td>
+                            <td>
+                                1.期货类：金属(1)/农产品(2)/能化(3)/黑色(4)/金融(5)/国债(6)/航运(7)；<br>
+                                2.股票类：<br>
+                                （1）上证：主板A股不含科创板(101)/B股(102)/科创板(103)/指数(104)/ETF(105)/可转债(106)；<br>
+                                （2）深证：主板A股不含科创板(201)/B股(202)/科创板(203)/指数(204)/ETF(205)/可转债(206)；<br>
+                                （3）北证：主板A股不含科创板(301)/指数(304)；<br>
+                                3.其他位置：赋值为0；
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>上市日</td>
+                            <td>整型</td>
+                            <td>
+                                格式为yyyymmdd，为该合约上市日期；<br>
+                                9999/9995/8888/8885取对应映射合约数据；<br>
+                                0000赋值合约品种上市日期；
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 日志面板 -->
+            <div class="log-panel">
+                <div class="log-header">
+                    <div class="log-tabs">
+                        <div class="log-tab">日志输出(编译)</div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="left-tool-btn">编译</button>
+                        <button class="left-tool-btn">执行</button>
+                        <button class="left-tool-btn">查找</button>
+                    </div>
+                </div>
+                <div class="log-content">
+                    <div class="log-line"><span class="time">[2026-05-18 09:07:42.980]</span> <span class="info">[Info]</span> 开始初始化因子服务！</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:07:42.980]</span> <span class="info">[Info]</span> 连接因子服务成功！</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:07:43.331]</span> <span class="info">[Info]</span> 开始使用本地的数据回测和实盘交易。</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:07:43.485]</span> <span class="info">[Info]</span> 使用本地的股票和成分股数据交易日：2026-05-18</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:07:43.486]</span> <span class="info">[Info]</span> 开始加载股票和成分股...</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:07:43.486]</span> <span class="info">[Info]</span> 使用本地的股票和成分股数据。</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:08:07.888]</span> <span class="info">[Info]</span> 开始加载股票的股票和成分数据：20260518</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:08:10.032]</span> <span class="info">[Info]</span> 开始取股票成分...</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:08:10.032]</span> <span class="info">[Info]</span> 开始取指数成分...</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:08:10.032]</span> <span class="info">[Info]</span> 开始预加载指数的成分数据中...</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:08:31.093]</span> <span class="info">[Info]</span> 加载股票和指数数据成功</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:08:31.093]</span> <span class="info">[Info]</span> 获取指数和股票的成分数据成功</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:08:31.093]</span> <span class="info">[Info]</span> 获取股票和股票的成分数据成功</div>
+                    <div class="log-line"><span class="time">[2026-05-18 09:08:54.110]</span> <span class="info">[Info]</span> 开始加载策略...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <span>因子: 1ms</span>
+        <span>服务: 1ms</span>
+        <span>服务: 1ms</span>
+    </div>
+</body>
+</html>

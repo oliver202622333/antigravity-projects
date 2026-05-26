@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>级联选择器组件 - 区域选择</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            padding: 40px;
+        }
+
+        .demo-section {
+            background: #fff;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .demo-title {
+            font-size: 16px;
+            color: #1f2937;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        /* 级联选择器容器 */
+        .cascade-selector {
+            display: inline-flex;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        /* 每一列 */
+        .cascade-column {
+            width: 180px;
+            border-right: 1px solid #e5e7eb;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .cascade-column:last-child {
+            border-right: none;
+        }
+
+        /* 选项 */
+        .cascade-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+            color: #1f2937;
+        }
+
+        .cascade-item:hover {
+            background: #f3f4f6;
+        }
+
+        /* 复选框容器 */
+        .checkbox-wrapper {
+            position: relative;
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* 隐藏原生checkbox */
+        .checkbox-wrapper input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        /* 自定义checkbox外观 */
+        .checkbox-custom {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            background: #fff;
+        }
+
+        /* 选中状态 */
+        .checkbox-wrapper input:checked + .checkbox-custom {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        /* 部分选中状态（减号） */
+        .checkbox-wrapper input.indeterminate + .checkbox-custom {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        /* 对勾图标 */
+        .check-icon {
+            width: 10px;
+            height: 10px;
+            display: none;
+        }
+
+        .checkbox-wrapper input:checked + .checkbox-custom .check-icon {
+            display: block;
+        }
+
+        /* 减号图标 */
+        .minus-icon {
+            width: 8px;
+            height: 2px;
+            background: #fff;
+            border-radius: 1px;
+            display: none;
+        }
+
+        .checkbox-wrapper input.indeterminate + .checkbox-custom .minus-icon {
+            display: block;
+        }
+
+        .checkbox-wrapper input.indeterminate + .checkbox-custom .check-icon {
+            display: none;
+        }
+
+        /* 展开箭头 */
+        .expand-arrow {
+            margin-left: auto;
+            width: 16px;
+            height: 16px;
+            color: #9ca3af;
+            flex-shrink: 0;
+        }
+
+        /* 禁用状态 */
+        .cascade-item.disabled {
+            color: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        .cascade-item.disabled .checkbox-custom {
+            border-color: #e5e7eb;
+            background: #f9fafb;
+        }
+
+        /* 选中的项背景 */
+        .cascade-item.selected {
+            background: #eff6ff;
+        }
+
+        /* 滚动条样式 */
+        .cascade-column::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .cascade-column::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+
+        .cascade-column::-webkit-scrollbar-track {
+            background: #f9fafb;
+        }
+
+        /* 已选结果展示 */
+        .selected-result {
+            margin-top: 24px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 6px;
+        }
+
+        .selected-result-title {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .selected-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #1d4ed8;
+        }
+
+        .tag-close {
+            margin-left: 6px;
+            cursor: pointer;
+            color: #93c5fd;
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .tag-close:hover {
+            color: #3b82f6;
+        }
+
+        /* 组件说明 */
+        .specs {
+            margin-top: 40px;
+            padding: 24px;
+            background: #fef3c7;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .specs h3 {
+            font-size: 14px;
+            color: #92400e;
+            margin-bottom: 12px;
+        }
+
+        .specs ul {
+            font-size: 13px;
+            color: #78350f;
+            line-height: 1.8;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-section">
+        <h2 class="demo-title">状态1 - 上海全选</h2>
+        <div class="cascade-selector" id="selector1">
+            <!-- 第一列：省份 -->
+            <div class="cascade-column">
+                <div class="cascade-item selected" data-id="shanghai">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" checked>
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>上海</span>
+                    <svg class="expand-arrow" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="cascade-item" data-id="jiangsu">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox">
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>江苏</span>
+                    <svg class="expand-arrow" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="cascade-item" data-id="zhejiang">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox">
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>浙江</span>
+                    <svg class="expand-arrow" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- 第二列：区县 -->
+            <div class="cascade-column">
+                <div class="cascade-item selected" data-id="putuo">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" checked>
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>普陀</span>
+                </div>
+                <div class="cascade-item selected" data-id="huangpu">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" checked>
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>黄埔</span>
+                </div>
+                <div class="cascade-item selected" data-id="xuhui">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" checked>
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>徐汇</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2 class="demo-title">状态2 - 上海部分选中</h2>
+        <div class="cascade-selector" id="selector2">
+            <!-- 第一列：省份 -->
+            <div class="cascade-column">
+                <div class="cascade-item selected" data-id="shanghai">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" class="indeterminate">
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>上海</span>
+                    <svg class="expand-arrow" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="cascade-item" data-id="jiangsu">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox">
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>江苏</span>
+                    <svg class="expand-arrow" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="cascade-item" data-id="zhejiang">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox">
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>浙江</span>
+                    <svg class="expand-arrow" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- 第二列：区县 -->
+            <div class="cascade-column">
+                <div class="cascade-item selected" data-id="putuo">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" checked>
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>普陀</span>
+                </div>
+                <div class="cascade-item" data-id="huangpu">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox">
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>黄埔</span>
+                </div>
+                <div class="cascade-item selected" data-id="xuhui">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" checked>
+                        <span class="checkbox-custom">
+                            <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                                <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="minus-icon"></span>
+                        </span>
+                    </label>
+                    <span>徐汇</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2 class="demo-title">完整交互演示</h2>
+        <div class="cascade-selector" id="interactive-selector"></div>
+
+        <div class="selected-result">
+            <div class="selected-result-title">已选择区域：</div>
+            <div class="selected-tags" id="selected-tags"></div>
+        </div>
+    </div>
+
+    <div class="specs">
+        <h3>组件设计规范</h3>
+        <ul>
+            <li><strong>复选框状态：</strong>未选中（空心）→ 部分选中（蓝色减号）→ 全选中（蓝色对勾）</li>
+            <li><strong>交互逻辑：</strong>选中父级自动选中所有子级；取消子级时父级变为部分选中或未选中</li>
+            <li><strong>尺寸：</strong>每列宽度 180px，选项高度 40px（10px 上下内边距）</li>
+            <li><strong>颜色：</strong>选中背景 #eff6ff，主色 #3b82f6，边框 #e5e7eb</li>
+            <li><strong>字号：</strong>选项文字 14px，标签文字 13px</li>
+        </ul>
+    </div>
+
+    <script>
+        // 数据结构
+        const regionData = [
+            {
+                id: 'shanghai',
+                name: '上海',
+                children: [
+                    { id: 'putuo', name: '普陀' },
+                    { id: 'huangpu', name: '黄埔' },
+                    { id: 'xuhui', name: '徐汇' }
+                ]
+            },
+            {
+                id: 'jiangsu',
+                name: '江苏',
+                children: [
+                    { id: 'nanjing', name: '南京' },
+                    { id: 'suzhou', name: '苏州' },
+                    { id: 'wuxi', name: '无锡' }
+                ]
+            },
+            {
+                id: 'zhejiang',
+                name: '浙江',
+                children: [
+                    { id: 'hangzhou', name: '杭州' },
+                    { id: 'ningbo', name: '宁波' },
+                    { id: 'wenzhou', name: '温州' }
+                ]
+            }
+        ];
+
+        // 选中状态存储
+        const selectedMap = new Map();
+
+        // 初始化交互演示
+        function initInteractiveSelector() {
+            const container = document.getElementById('interactive-selector');
+
+            // 渲染第一列
+            const firstColumn = document.createElement('div');
+            firstColumn.className = 'cascade-column';
+
+            regionData.forEach(province => {
+                const item = createCascadeItem(province, 'province');
+                firstColumn.appendChild(item);
+            });
+
+            container.appendChild(firstColumn);
+
+            // 默认选中上海展开
+            const shanghaiItem = firstColumn.querySelector('[data-id="shanghai"]');
+            if (shanghaiItem) {
+                shanghaiItem.classList.add('selected');
+                renderSecondColumn('shanghai');
+            }
+
+            updateSelectedTags();
+        }
+
+        // 创建选项元素
+        function createCascadeItem(data, level) {
+            const item = document.createElement('div');
+            item.className = 'cascade-item';
+            item.dataset.id = data.id;
+            item.dataset.level = level;
+
+            const hasChildren = data.children && data.children.length > 0;
+
+            item.innerHTML = `
+                <label class="checkbox-wrapper">
+                    <input type="checkbox">
+                    <span class="checkbox-custom">
+                        <svg class="check-icon" viewBox="0 0 12 10" fill="none">
+                            <path d="M10 2L4 8L1.5 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="minus-icon"></span>
+                    </span>
+                </label>
+                <span>${data.name}</span>
+                ${hasChildren ? `
+                    <svg class="expand-arrow" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </svg>
+                ` : ''}
+            `;
+
+            // 点击事件
+            item.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'INPUT') {
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.classList.remove('indeterminate');
+                }
+
+                handleCheckboxChange(data, item, level);
+            });
+
+            // 阻止复选框冒泡
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('click', (e) => {
+                e.stopPropagation();
+                checkbox.classList.remove('indeterminate');
+                handleCheckboxChange(data, item, level);
+            });
+
+            return item;
+        }
+
+        // 处理复选框变化
+        function handleCheckboxChange(data, item, level) {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            const isChecked = checkbox.checked;
+
+            if (level === 'province') {
+                // 选中高亮
+                const column = item.parentElement;
+                column.querySelectorAll('.cascade-item').forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+
+                // 渲染子级
+                renderSecondColumn(data.id);
+
+                // 更新子级选中状态
+                const secondColumn = document.getElementById('interactive-selector').querySelector('.cascade-column:nth-child(2)');
+                if (secondColumn) {
+                    secondColumn.querySelectorAll('.cascade-item').forEach(childItem => {
+                        const childCheckbox = childItem.querySelector('input[type="checkbox"]');
+                        childCheckbox.checked = isChecked;
+                        childCheckbox.classList.remove('indeterminate');
+                        if (isChecked) {
+                            childItem.classList.add('selected');
+                            const childId = childItem.dataset.id;
+                            selectedMap.set(childId, true);
+                        } else {
+                            childItem.classList.remove('selected');
+                            const childId = childItem.dataset.id;
+                            selectedMap.delete(childId);
+                        }
+                    });
+                }
+
+                // 更新父级状态
+                if (!isChecked) {
+                    checkbox.classList.remove('indeterminate');
+                }
+            } else {
+                // 区县级别
+                if (isChecked) {
+                    item.classList.add('selected');
+                    selectedMap.set(data.id, true);
+                } else {
+                    item.classList.remove('selected');
+                    selectedMap.delete(data.id);
+                }
+
+                // 更新父级状态
+                updateParentState();
+            }
+
+            updateSelectedTags();
+        }
+
+        // 渲染第二列
+        function renderSecondColumn(provinceId) {
+            const container = document.getElementById('interactive-selector');
+
+            // 移除旧的第二列
+            const oldColumn = container.querySelector('.cascade-column:nth-child(2)');
+            if (oldColumn) {
+                oldColumn.remove();
+            }
+
+            const province = regionData.find(p => p.id === provinceId);
+            if (!province || !province.children) return;
+
+            const secondColumn = document.createElement('div');
+            secondColumn.className = 'cascade-column';
+
+            province.children.forEach(district => {
+                const item = createCascadeItem(district, 'district');
+                if (selectedMap.has(district.id)) {
+                    item.classList.add('selected');
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    checkbox.checked = true;
+                }
+                secondColumn.appendChild(item);
+            });
+
+            container.appendChild(secondColumn);
+        }
+
+        // 更新父级状态
+        function updateParentState() {
+            const container = document.getElementById('interactive-selector');
+            const firstColumn = container.querySelector('.cascade-column:first-child');
+
+            firstColumn.querySelectorAll('.cascade-item').forEach(provinceItem => {
+                const provinceId = provinceItem.dataset.id;
+                const province = regionData.find(p => p.id === provinceId);
+                if (!province || !province.children) return;
+
+                const totalChildren = province.children.length;
+                const selectedChildren = province.children.filter(c => selectedMap.has(c.id)).length;
+
+                const checkbox = provinceItem.querySelector('input[type="checkbox"]');
+
+                if (selectedChildren === totalChildren && totalChildren > 0) {
+                    checkbox.checked = true;
+                    checkbox.classList.remove('indeterminate');
+                } else if (selectedChildren > 0) {
+                    checkbox.checked = false;
+                    checkbox.classList.add('indeterminate');
+                } else {
+                    checkbox.checked = false;
+                    checkbox.classList.remove('indeterminate');
+                }
+            });
+        }
+
+        // 更新已选标签
+        function updateSelectedTags() {
+            const tagsContainer = document.getElementById('selected-tags');
+            tagsContainer.innerHTML = '';
+
+            selectedMap.forEach((_, id) => {
+                let name = '';
+                for (const province of regionData) {
+                    if (province.children) {
+                        const district = province.children.find(c => c.id === id);
+                        if (district) {
+                            name = `${province.name} / ${district.name}`;
+                            break;
+                        }
+                    }
+                }
+
+                if (name) {
+                    const tag = document.createElement('span');
+                    tag.className = 'selected-tag';
+                    tag.innerHTML = `
+                        ${name}
+                        <span class="tag-close" data-id="${id}">&times;</span>
+                    `;
+                    tagsContainer.appendChild(tag);
+
+                    // 移除按钮
+                    tag.querySelector('.tag-close').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const removeId = e.target.dataset.id;
+                        selectedMap.delete(removeId);
+
+                        const secondColumn = document.getElementById('interactive-selector').querySelector('.cascade-column:nth-child(2)');
+                        if (secondColumn) {
+                            const item = secondColumn.querySelector(`[data-id="${removeId}"]`);
+                            if (item) {
+                                item.classList.remove('selected');
+                                const checkbox = item.querySelector('input[type="checkbox"]');
+                                checkbox.checked = false;
+                            }
+                        }
+
+                        updateParentState();
+                        updateSelectedTags();
+                    });
+                }
+            });
+
+            if (selectedMap.size === 0) {
+                tagsContainer.innerHTML = '<span style="color: #9ca3af; font-size: 13px;">暂未选择</span>';
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', initInteractiveSelector);
+    </script>
+</body>
+</html>
